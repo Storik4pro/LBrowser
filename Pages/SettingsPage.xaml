@@ -1,0 +1,83 @@
+﻿<Page
+    x:Class="LinesBrowser.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:LinesBrowser"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <local:UTextBlock x:Uid="Settings" Text="SETTINGS" FontWeight="SemiBold" Margin="10 10 0 0"/>
+
+        <ScrollViewer Grid.Row="1" Padding="10" VerticalAlignment="Stretch">
+            <StackPanel MaxWidth="500" HorizontalAlignment="Left">
+                <TextBlock x:Uid="Connection" Text="Connection" Style="{StaticResource  CustomSubtitleTextBlockStyle}" TextWrapping="Wrap"/>
+                <CheckBox x:Uid="AutomaticallyConnect" x:Name="AutoConnectCheckBox" Content="Connect to server automaticly when app is launch" Click="AutoConnectCheckBox_Click"/>
+                <!--
+                <TextBlock Text="Maximum audio lag from server (seconds)" Margin="0 6 0 0" FontWeight="SemiBold"/>
+                <TextBox x:Name="LagTextBox" Width="200" HorizontalAlignment="Left"/>
+                -->
+                <TextBlock x:Uid="DisconnectTitle" Text="Disconnecting" Margin="0 6 0 0" FontWeight="SemiBold"/>
+                <TextBlock x:Uid="DisconnectText" Text="You can disconnect from server to change server IP address. Start connection page will be opened after that." 
+                           TextWrapping="Wrap"/>
+                <Button x:Uid="Disconnect" x:Name="DisconnectButton" Content="Disconnect" Margin="0 6 0 0" Click="DisconnectButton_Click"/>
+                
+                <TextBlock x:Uid="RegLang" Style="{StaticResource  CustomSubtitleTextBlockStyle}" TextWrapping="Wrap"/>
+                <TextBlock x:Uid="SettingsPage_LanguageLabel" Margin="0 5 0 5" FontWeight="SemiBold"/>
+                <ComboBox x:Name="LanguageComboBox" x:Uid="SettingsPage_LanguageComboBox" 
+                        HorizontalAlignment="Left" MaxWidth="300" Width="200" SelectionChanged="OnLanguageChanged" 
+                        ItemsSource="{x:Bind Languages}" DisplayMemberPath="DisplayName" SelectedValuePath="Code"
+                        Loaded="LanguageComboBox_Loaded"/>
+                <TextBlock x:Uid="About" Style="{StaticResource  CustomSubtitleTextBlockStyle}" TextWrapping="Wrap"/>
+                <Grid Padding="10 5 10 5" HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE946;" FontSize="16" VerticalAlignment="Center"/>
+                    <RichTextBlock Grid.Column="1" Margin="6 0 0 0" VerticalAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Stretch">
+                        <Paragraph>
+                            <Run x:Uid="OriginalIdea"/>
+                            <Hyperlink NavigateUri="https://github.com/PreyK/Windows-Mobile-Browser-Streaming">Windows-Mobile-Browser-Streaming</Hyperlink>
+                            <Run x:Uid="Project"/>
+                        </Paragraph>
+                    </RichTextBlock>
+                </Grid>
+                <TextBlock x:Name="VersionTextBlock" Style="{StaticResource  CustomBodyTextBlockStyle}"/>
+                <TextBlock x:Name="DeveloperTextBlock" Style="{StaticResource  CustomBodyTextBlockStyle}"/>
+                <TextBlock x:Name="SystemInfoTextBlock" Style="{StaticResource  CustomBodyTextBlockStyle}"/>
+                <TextBlock x:Uid="Thanks" Style="{StaticResource  CustomBaseTextBlockStyle}"/>
+                <StackPanel x:Name="ThanksPanel" Padding="10 0 0 0">
+                    <!-- Something must to be here -->
+                </StackPanel>
+                <TextBlock x:Uid="Community" Margin="0 25 0 0" Style="{StaticResource CustomSubtitleTextBlockStyle}" TextWrapping="Wrap"/>
+                <TextBlock x:Uid="NothingErr"/>
+                <TextBlock x:Uid="QuestionSettings" Margin="0 25 0 0" Style="{StaticResource SubtitleTextBlockStyle}" TextWrapping="Wrap"/>
+                <Grid Padding="10 5 10 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon Glyph="&#xE946;" FontSize="16" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" x:Uid="LinksOpenInDefaultBrowser" Margin="6 0 0 0" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                </Grid>
+                <HyperlinkButton NavigateUri="https://storik4pro.github.io/LBrowser/wiki">
+                    <HyperlinkButton.Content>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="Wiki"/>
+                            <FontIcon Margin="6 0 0 0" Glyph="&#xE8A7;" FontSize="16" />
+                        </StackPanel>
+                    </HyperlinkButton.Content>
+                </HyperlinkButton>
+
+            </StackPanel>
+        </ScrollViewer>
+        
+    </Grid>
+</Page>

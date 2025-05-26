@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ERR_NET_INVALID_URI" xml:space="preserve">
+    <value>Invalid server address. Please verify you have entered the correct IP and port in the format ws://192.168.1.5:8080, with no extra characters or typos.</value>
+  </data>
+  <data name="ERR_NET_HOST_NAME_NOT_RESOLVED" xml:space="preserve">
+    <value>Could not resolve the server name. Ensure that your phone and PC are connected to the same network (Wi‑Fi or LAN) and that DNS queries are not being blocked.</value>
+  </data>
+  <data name="ERR_NET_CANNOT_CONNECT" xml:space="preserve">
+    <value>Failed to connect to the local server. Please verify that the server application is running, listening on the correct port, and that Windows Firewall or other security software is not blocking that port.</value>
+  </data>
+  <data name="ERR_NET_SERVER_UNREACHABLE" xml:space="preserve">
+    <value>Server is unreachable. It may be stopped or unresponsive. Try restarting the server application and confirm that the port is open in your security settings.</value>
+  </data>
+  <data name="ERR_NET_TIMEOUT" xml:space="preserve">
+    <value>The server did not respond within the expected timeframe, indicating possible high latency or packet loss. Please remain on the same network, use a wired Ethernet connection if possible, and retry.</value>
+  </data>
+  <data name="ERR_NET_CONNECTION_ABORTED" xml:space="preserve">
+    <value>The connection was aborted unexpectedly—perhaps the server shut down mid‑session or the network link dropped. Please check for recent firewall changes or try again over a wired connection.</value>
+  </data>
+  <data name="ERR_NET_CONNECTION_RESET" xml:space="preserve">
+    <value>The connection was forcibly closed by the server or network equipment. Please ensure that your firewall is not terminating idle connections and that your router is not dropping packets.</value>
+  </data>
+  <data name="ERR_NET_DISCONNECTED" xml:space="preserve">
+    <value>The server closed the connection cleanly before data exchange. Please verify that the server application is still running and listening, and restart it if necessary.</value>
+  </data>
+  <data name="ERR_NET_OPERATION_CANCELED" xml:space="preserve">
+    <value>The operation was canceled before completion. If you did not cancel it manually, please check for VPNs, proxies, or other utilities that may have interrupted the request.</value>
+  </data>
+  <data name="ERR_NET_ERROR_HTTP_HEADER_NOT_FOUND" xml:space="preserve">
+    <value>A required HTTP header was missing from the server response. Please ensure both client and server are updated and that the server is sending all necessary headers.</value>
+  </data>
+  <data name="ERR_NET_ERROR_HTTP_INVALID_SERVER_RESPONSE" xml:space="preserve">
+    <value>The server sent a malformed HTTP response. Often this indicates you are connecting to the wrong service or port (for example, an administrative console). Please double‑check your target.</value>
+  </data>
+  <data name="ERR_NET_REDIRECT_FAILED" xml:space="preserve">
+    <value>The server attempted to redirect the request but the redirect could not be followed. Please ensure you are not mixing HTTP→HTTPS (or vice versa) redirects, or configure the server to accept connections on the requested scheme and port.</value>
+  </data>
+  <data name="ERR_NET_UNEXPECTED_STATUS_CODE" xml:space="preserve">
+    <value>The server returned an unexpected status code. This may indicate a server‑side issue—please restart the server and inspect its logs for details.</value>
+  </data>
+  <data name="ERR_NET_ACCESS_DENIED" xml:space="preserve">
+    <value>Access denied. Please check your firewall rules and user permissions, and run the application with elevated privileges if required.</value>
+  </data>
+  <data name="ERR_NET_UNKNOWN" xml:space="preserve">
+    <value>An unknown network error occurred. Please disable any VPN or proxy, confirm both devices are on the same network, and retry the connection.</value>
+  </data>
+
+  <data name="ERR_NET_CERTIFICATE_COMMON_NAME_INCORRECT" xml:space="preserve">
+    <value>The certificate was issued for a different host name. Please ask your system administrator to issue a new certificate with the correct host name, or temporarily disable encryption for testing.</value>
+  </data>
+  <data name="ERR_NET_CERTIFICATE_EXPIRED" xml:space="preserve">
+    <value>The certificate has expired. Please ask your system administrator to renew or reissue the certificate; until then, connections will remain insecure.</value>
+  </data>
+  <data name="ERR_NET_CERTIFICATE_CONTAINS_ERRORS" xml:space="preserve">
+    <value>The certificate contains errors (e.g., bad signature or unsupported algorithm). Please ask your system administrator to inspect and reissue a valid certificate, or disable encryption for local debugging.</value>
+  </data>
+  <data name="ERR_NET_CERTIFICATE_REVOKED" xml:space="preserve">
+    <value>The certificate has been revoked by the certification authority. Please ask your system administrator to install a valid certificate or reconfigure the server accordingly.</value>
+  </data>
+  <data name="ERR_NET_CERTIFICATE_INVALID" xml:space="preserve">
+    <value>The certificate is invalid (structurally non‑compliant). Please ask your system administrator to install a proper SSL certificate.</value>
+  </data>
+
+  <data name="ERR_NET_HTTP_TO_HTTPS_ON_REDIRECTION" xml:space="preserve">
+    <value>The server is redirecting from HTTP to HTTPS, which the client does not support. Please connect directly over HTTPS or remove the forced redirect on the server.</value>
+  </data>
+  <data name="ERR_NET_HTTPS_TO_HTTP_ON_REDIRECTION" xml:space="preserve">
+    <value>The server is redirecting from HTTPS to HTTP, which is insecure. Please verify you are using the correct protocol in the URL and reconfigure the server to avoid mixed schemes.</value>
+  </data>
+
+  <data name="ERR_AUDIO_INVALID_URI" xml:space="preserve">
+    <value>Invalid audio stream address. Please verify you have entered the correct IP and port in the format ws://192.168.1.5:8080, with no extra characters or typos.</value>
+  </data>
+  <data name="ERR_AUDIO_HOST_NAME_NOT_RESOLVED" xml:space="preserve">
+    <value>Could not resolve the audio stream host name. Ensure that your phone and PC are connected to the same network (Wi‑Fi or LAN) and that DNS queries are not being blocked.</value>
+  </data>
+  <data name="ERR_AUDIO_CANNOT_CONNECT" xml:space="preserve">
+    <value>Failed to connect to the audio stream. Please verify that the server application is running, listening on the correct port, and that Windows Firewall or other security software is not blocking that port.</value>
+  </data>
+  <data name="ERR_AUDIO_SERVER_UNREACHABLE" xml:space="preserve">
+    <value>Audio stream server is unreachable. It may be stopped or unresponsive. Try restarting the server application and confirm that the port is open in your security settings.</value>
+  </data>
+  <data name="ERR_AUDIO_TIMEOUT" xml:space="preserve">
+    <value>The audio stream did not respond within the expected timeframe, indicating possible high latency or packet loss. Please remain on the same network, use a wired Ethernet connection if possible, and retry.</value>
+  </data>
+  <data name="ERR_AUDIO_CONNECTION_ABORTED" xml:space="preserve">
+    <value>The audio stream connection was aborted unexpectedly—perhaps the server shut down mid‑stream or the network link dropped. Please check for recent firewall changes or try again over a wired connection.</value>
+  </data>
+  <data name="ERR_AUDIO_CONNECTION_RESET" xml:space="preserve">
+    <value>The audio stream connection was forcibly closed by the server or network equipment. Please ensure that your firewall is not terminating idle connections and that your router is not dropping packets.</value>
+  </data>
+  <data name="ERR_AUDIO_DISCONNECTED" xml:space="preserve">
+    <value>The audio stream server closed the connection cleanly before data exchange. Please verify that the server application is still running and listening, and restart it if necessary.</value>
+  </data>
+  <data name="ERR_AUDIO_OPERATION_CANCELED" xml:space="preserve">
+    <value>The audio streaming operation was canceled before completion. If you did not cancel it manually, please check for VPNs, proxies, or other utilities that may have interrupted the request.</value>
+  </data>
+  <data name="ERR_AUDIO_ERROR_HTTP_HEADER_NOT_FOUND" xml:space="preserve">
+    <value>A required HTTP header was missing from the audio stream response. Please ensure both client and server are updated and that the server is sending all necessary headers.</value>
+  </data>
+  <data name="ERR_AUDIO_ERROR_HTTP_INVALID_SERVER_RESPONSE" xml:space="preserve">
+    <value>The server sent a malformed HTTP response for the audio stream. Often this indicates you are connecting to the wrong service or port. Please double‑check your target.</value>
+  </data>
+  <data name="ERR_AUDIO_REDIRECT_FAILED" xml:space="preserve">
+    <value>The server attempted to redirect the audio stream request but the redirect could not be followed. Please ensure you are not mixing HTTP→HTTPS (or vice versa) redirects, or configure the server to accept connections on the requested scheme and port.</value>
+  </data>
+  <data name="ERR_AUDIO_UNEXPECTED_STATUS_CODE" xml:space="preserve">
+    <value>The audio stream server returned an unexpected status code. This may indicate a server‑side issue—please restart the server and inspect its logs for details.</value>
+  </data>
+  <data name="ERR_AUDIO_ACCESS_DENIED" xml:space="preserve">
+    <value>Access to the audio stream was denied. Please check your firewall rules and user permissions, and run the application with elevated privileges if required.</value>
+  </data>
+  <data name="ERR_AUDIO_UNKNOWN" xml:space="preserve">
+    <value>An unknown audio stream error occurred. Please disable any VPN or proxy, confirm both devices are on the same network, and retry the connection.</value>
+  </data>
+  <data name="ERR_AUDIO_CERTIFICATE_COMMON_NAME_INCORRECT" xml:space="preserve">
+    <value>The certificate for the audio stream was issued for a different host name. Please ask your system administrator to issue a new certificate with the correct host name, or temporarily disable encryption for testing.</value>
+  </data>
+  <data name="ERR_AUDIO_CERTIFICATE_EXPIRED" xml:space="preserve">
+    <value>The certificate for the audio stream has expired. Please ask your system administrator to renew or reissue the certificate; until then, connections will remain insecure.</value>
+  </data>
+  <data name="ERR_AUDIO_CERTIFICATE_CONTAINS_ERRORS" xml:space="preserve">
+    <value>The certificate for the audio stream contains errors (e.g., bad signature or unsupported algorithm). Please ask your system administrator to inspect and reissue a valid certificate, or disable encryption for local debugging.</value>
+  </data>
+  <data name="ERR_AUDIO_CERTIFICATE_REVOKED" xml:space="preserve">
+    <value>The certificate for the audio stream has been revoked by the certification authority. Please ask your system administrator to install a valid certificate or reconfigure the server accordingly.</value>
+  </data>
+  <data name="ERR_AUDIO_CERTIFICATE_INVALID" xml:space="preserve">
+    <value>The certificate for the audio stream is invalid (structurally non‑compliant). Please ask your system administrator to install a proper SSL certificate.</value>
+  </data>
+  <data name="ERR_AUDIO_HTTP_TO_HTTPS_ON_REDIRECTION" xml:space="preserve">
+    <value>The server is redirecting the audio stream from HTTP to HTTPS, which the client does not support. Please connect directly over HTTPS or remove the forced redirect on the server.</value>
+  </data>
+  <data name="ERR_AUDIO_HTTPS_TO_HTTP_ON_REDIRECTION" xml:space="preserve">
+    <value>The server is redirecting the audio stream from HTTPS to HTTP, which is insecure. Please verify you are using the correct protocol in the URL and reconfigure the server to avoid mixed schemes.</value>
+  </data>
+</root>

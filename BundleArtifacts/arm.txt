@@ -1,0 +1,3 @@
+MainPackage=E:\Windows-Mobile-Browser-Streaming-main\BrowserClient\bin\ARM\Debug\BrowserClient_1.0.40.0_ARM_Debug.appx
+SymbolPackage=E:\Windows-Mobile-Browser-Streaming-main\BrowserClient\obj\ARM\Debug\Symbols\BrowserClient_1.0.40.0_ARM_Debug.appxsym
+ResourcePack=E:\Windows-Mobile-Browser-Streaming-main\BrowserClient\bin\ARM\Debug\BrowserClient_1.0.40.0_language-ru.appx
