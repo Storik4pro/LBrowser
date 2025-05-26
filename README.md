@@ -1,3 +1,6 @@
+
+![StoreLogo scale-150](https://github.com/user-attachments/assets/2f50dd98-f5d3-4491-9cb0-886fb3c49ee3)
+
 ### [EN]
 ## About
 **Lines Browser** is a Browser-as-a-Service solution that allows you to use the modern Internet on Windows 10 Mobile devices. Unlike other browsers on this platform, Lines Browser does not use the outdated EdgeHTML engine.
