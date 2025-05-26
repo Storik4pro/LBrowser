@@ -212,7 +212,7 @@ namespace LinesBrowser
                         catch (Exception ex)
                         {
                             Debug.WriteLine($"Error processing text message: {ex.Message}");
-                            // ErrorHappensReceived?.Invoke(this, $"Error processing text message: {ex.Message}");
+                            // ShowErrorDialogAsync("UNEXPECTED CRITICAL ERROR", $"Error processing text message: {ex.Message}");
                         }
                         break;
                     default:
@@ -224,6 +224,29 @@ namespace LinesBrowser
                 ErrorHappensReceived?.Invoke(this, $"ERR_NET_SYSTEM_DISCONNECT_STATUS_{sock.CloseStatus}");
             }
             Debug.WriteLine("Connection closed");
+        }
+
+        private async Task ShowErrorDialogAsync(string title, string message)
+        {
+            var dispatcher = Windows.ApplicationModel.Core.CoreApplication.MainView?.CoreWindow?.Dispatcher;
+            if (dispatcher != null)
+            {
+                await dispatcher.RunAsync(
+                    Windows.UI.Core.CoreDispatcherPriority.Normal, async () =>
+                    {
+                        var dialog = new Windows.UI.Xaml.Controls.ContentDialog
+                        {
+                            Title = title,
+                            Content = message,
+                            CloseButtonText = "OK"
+                        };
+                        await dialog.ShowAsync();
+                    });
+            }
+            else
+            {
+                
+            }
         }
         public async void RequestNewScreenshot(string size)
         {
