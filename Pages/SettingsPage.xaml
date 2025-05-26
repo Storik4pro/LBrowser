@@ -67,7 +67,7 @@
                     <FontIcon Glyph="&#xE946;" FontSize="16" HorizontalAlignment="Center"/>
                     <TextBlock Grid.Column="1" x:Uid="LinksOpenInDefaultBrowser" Margin="6 0 0 0" VerticalAlignment="Center" TextWrapping="Wrap"/>
                 </Grid>
-                <HyperlinkButton NavigateUri="https://storik4pro.github.io/LBrowser/wiki">
+                <HyperlinkButton x:Name="WikiUrl" NavigateUri="https://storik4pro.github.io/LBrowser/wiki">
                     <HyperlinkButton.Content>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock x:Uid="Wiki"/>
