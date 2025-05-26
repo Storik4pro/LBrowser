@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -37,6 +38,22 @@ namespace LinesBrowser
 
             EnableAudioStream.Content += $" ({resourceLoader.GetString("BetaTestString")})";
             ShowAdditionalSettingsButtonText.Text = resourceLoader.GetString("ShowAdditionalSettings");
+
+            string _langTag = CultureInfo.CurrentCulture.Name;
+            string langTag;
+
+            if (_langTag == "ru")
+            {
+                langTag = "ru-RU";
+            }
+            else
+            {
+                langTag = "en-US";
+            }
+
+            WikiQUrl.NavigateUri = new Uri($"https://storik4pro.github.io/{langTag}/LBrowser/wiki/what-i-need-to-do-for-start/");
+            WikiUrl.NavigateUri = new Uri($"https://storik4pro.github.io/{langTag}/LBrowser/");
+
         }
 
         private void ShowAdditionalSettingsButton_Click(object sender, RoutedEventArgs e)

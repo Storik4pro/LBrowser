@@ -20,6 +20,7 @@ using Windows.ApplicationModel.Resources.Core;
 using Windows.ApplicationModel.Resources;
 using System.Diagnostics;
 using Windows.Storage;
+using System.Globalization;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -70,6 +71,20 @@ namespace LinesBrowser
             }
             SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
             AutoConnectCheckBox.IsChecked = settings.Values["AutoConnect"] as bool?;
+
+            string _langTag = CultureInfo.CurrentCulture.Name;
+            string langTag;
+
+            if (_langTag == "ru")
+            {
+                langTag = "ru-RU";
+            }
+            else
+            {
+                langTag = "en-US";
+            }
+
+                WikiUrl.NavigateUri = new Uri($"https://storik4pro.github.io/{langTag}/LBrowser/wiki");
 
             // LagTextBox.Text = (settings.Values["preferredLag"] as string)?? "2";
         }
