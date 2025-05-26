@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>	
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+  <data name="ERR_NET_INVALID_URI" xml:space="preserve">
+    <value>Неверный адрес сервера. Пожалуйста, проверьте, что вы указали правильный IP и порт в формате ws://192.168.1.5:8080, без лишних символов и опечаток.</value>
+  </data>
+  <data name="ERR_NET_HOST_NAME_NOT_RESOLVED" xml:space="preserve">
+    <value>Не удалось разрешить имя сервера. Убедитесь, что телефон и ПК подключены к одной сети (Wi‑Fi или LAN) и что DNS‑запросы не блокируются.</value>
+  </data>
+  <data name="ERR_NET_CANNOT_CONNECT" xml:space="preserve">
+    <value>Не удалось подключиться к локальному серверу. Пожалуйста, убедитесь, что серверное приложение запущено, слушает нужный порт и что брандмауэр Windows или другое ПО безопасности не блокирует этот порт.</value>
+  </data>
+  <data name="ERR_NET_SERVER_UNREACHABLE" xml:space="preserve">
+    <value>Сервер недоступен. Возможно, он остановлен или завис. Попробуйте перезапустить серверное приложение и убедитесь, что порт открыт в настройках безопасности.</value>
+  </data>
+  <data name="ERR_NET_TIMEOUT" xml:space="preserve">
+    <value>Сервер не ответил в отведённое время, что может свидетельствовать о высокой задержке или потере пакетов. Пожалуйста, оставайтесь в одной сети, подключитесь по кабелю Ethernet при возможности и повторите попытку.</value>
+  </data>
+  <data name="ERR_NET_CONNECTION_ABORTED" xml:space="preserve">
+    <value>Соединение было неожиданно прервано — возможно, сервер завершил работу или связь пропала. Пожалуйста, проверьте недавние изменения в брандмауэре или попробуйте снова по проводному подключению.</value>
+  </data>
+  <data name="ERR_NET_CONNECTION_RESET" xml:space="preserve">
+    <value>Соединение было принудительно закрыто сервером или сетевым оборудованием. Пожалуйста, убедитесь, что брандмауэр не разрывает неактивные подключения и что роутер не сбрасывает пакеты.</value>
+  </data>
+  <data name="ERR_NET_DISCONNECTED" xml:space="preserve">
+    <value>Сервер корректно закрыл соединение до обмена данными. Пожалуйста, убедитесь, что серверное приложение всё ещё запущено и слушает запросы, и перезапустите его при необходимости.</value>
+  </data>
+  <data name="ERR_NET_OPERATION_CANCELED" xml:space="preserve">
+    <value>Операция была отменена до завершения. Если вы не отменяли её вручную, пожалуйста, проверьте VPN, прокси или другие утилиты, которые могли прервать запрос.</value>
+  </data>
+  <data name="ERR_NET_ERROR_HTTP_HEADER_NOT_FOUND" xml:space="preserve">
+    <value>В ответе сервера отсутствует обязательный HTTP‑заголовок. Пожалуйста, убедитесь, что клиент и сервер обновлены и что сервер отправляет все необходимые заголовки.</value>
+  </data>
+  <data name="ERR_NET_ERROR_HTTP_INVALID_SERVER_RESPONSE" xml:space="preserve">
+    <value>Сервер вернул некорректный HTTP‑ответ. Часто это означает, что вы подключаетесь к неверному сервису или порту (например, к панели администратора). Пожалуйста, проверьте настройки.</value>
+  </data>
+  <data name="ERR_NET_REDIRECT_FAILED" xml:space="preserve">
+    <value>Сервер попытался перенаправить запрос, но перенаправление не удалось выполнить. Пожалуйста, убедитесь, что вы не смешиваете HTTP→HTTPS (или наоборот), либо настройте сервер для приёма соединений по нужному протоколу и порту.</value>
+  </data>
+  <data name="ERR_NET_UNEXPECTED_STATUS_CODE" xml:space="preserve">
+    <value>Сервер вернул неожиданный код состояния. Это может указывать на проблему на стороне сервера — пожалуйста, перезапустите сервер и проверьте логи.</value>
+  </data>
+  <data name="ERR_NET_ACCESS_DENIED" xml:space="preserve">
+    <value>Доступ запрещён. Пожалуйста, проверьте правила брандмауэра и права пользователя, а также запустите приложение от имени администратора при необходимости.</value>
+  </data>
+  <data name="ERR_NET_UNKNOWN" xml:space="preserve">
+    <value>Произошла неизвестная сетевая ошибка. Пожалуйста, отключите VPN или прокси, убедитесь, что оба устройства в одной сети, и повторите попытку соединения.</value>
+  </data>
+
+  <data name="ERR_NET_CERTIFICATE_COMMON_NAME_INCORRECT" xml:space="preserve">
+    <value>Сертификат выдан не для указанного адреса. Пожалуйста, попросите вашего системного администратора выдать новый сертификат с корректным именем хоста или временно отключите шифрование для тестирования.</value>
+  </data>
+  <data name="ERR_NET_CERTIFICATE_EXPIRED" xml:space="preserve">
+    <value>Срок действия сертификата истёк. Пожалуйста, попросите вашего системного администратора продлить или переиздать сертификат; до этого подключения будут небезопасны.</value>
+  </data>
+  <data name="ERR_NET_CERTIFICATE_CONTAINS_ERRORS" xml:space="preserve">
+    <value>В сертификате обнаружены ошибки (например, неверная подпись или неподдерживаемый алгоритм). Пожалуйста, попросите вашего системного администратора проверить и переиздать корректный сертификат либо отключить шифрование для локальной отладки.</value>
+  </data>
+  <data name="ERR_NET_CERTIFICATE_REVOKED" xml:space="preserve">
+    <value>Сертификат отозван центром сертификации. Пожалуйста, попросите вашего системного администратора установить действительный сертификат или перенастроить сервер.</value>
+  </data>
+  <data name="ERR_NET_CERTIFICATE_INVALID" xml:space="preserve">
+    <value>Сертификат некорректен (структура нарушена или не соответствует стандартам). Пожалуйста, попросите вашего системного администратора установить правильный SSL‑сертификат.</value>
+  </data>
+
+  <data name="ERR_NET_HTTP_TO_HTTPS_ON_REDIRECTION" xml:space="preserve">
+    <value>Сервер перенаправляет с HTTP на HTTPS, что клиент не поддерживает. Пожалуйста, подключитесь по HTTPS напрямую или уберите принудительное перенаправление на сервере.</value>
+  </data>
+  <data name="ERR_NET_HTTPS_TO_HTTP_ON_REDIRECTION" xml:space="preserve">
+    <value>Сервер перенаправляет с HTTPS на HTTP, что небезопасно. Пожалуйста, проверьте правильность протокола в URL и перенастройте сервер, чтобы избежать смешения схем.</value>
+  </data>
+
+  <data name="ERR_AUDIO_INVALID_URI" xml:space="preserve">
+    <value>Неверный адрес аудиопотока. Пожалуйста, проверьте, что вы указали правильный IP и порт в формате ws://192.168.1.5:8080, без лишних символов и опечаток.</value>
+  </data>
+  <data name="ERR_AUDIO_HOST_NAME_NOT_RESOLVED" xml:space="preserve">
+    <value>Не удалось разрешить имя хоста аудиопотока. Убедитесь, что телефон и ПК подключены к одной сети (Wi‑Fi или LAN) и что DNS‑запросы не блокируются.</value>
+  </data>
+  <data name="ERR_AUDIO_CANNOT_CONNECT" xml:space="preserve">
+    <value>Не удалось подключиться к аудиопотоку. Пожалуйста, убедитесь, что серверное приложение запущено, слушает нужный порт и что брандмауэр Windows или другое ПО безопасности не блокирует этот порт.</value>
+  </data>
+  <data name="ERR_AUDIO_SERVER_UNREACHABLE" xml:space="preserve">
+    <value>Сервер аудиопотока недоступен. Возможно, он остановлен или завис. Попробуйте перезапустить серверное приложение и убедитесь, что порт открыт в настройках безопасности.</value>
+  </data>
+  <data name="ERR_AUDIO_TIMEOUT" xml:space="preserve">
+    <value>Аудиопоток не ответил в отведённое время, что может свидетельствовать о высокой задержке или потере пакетов. Пожалуйста, оставайтесь в одной сети, подключитесь по кабелю Ethernet при возможности и повторите попытку.</value>
+  </data>
+  <data name="ERR_AUDIO_CONNECTION_ABORTED" xml:space="preserve">
+    <value>Соединение аудиопотока было неожиданно прервано — возможно, сервер завершил работу или связь пропала. Пожалуйста, проверьте недавние изменения в брандмауэре или попробуйте снова по проводному подключению.</value>
+  </data>
+  <data name="ERR_AUDIO_CONNECTION_RESET" xml:space="preserve">
+    <value>Соединение аудиопотока было принудительно закрыто сервером или сетевым оборудованием. Пожалуйста, убедитесь, что брандмауэр не разрывает неактивные подключения и что роутер не сбрасывает пакеты.</value>
+  </data>
+  <data name="ERR_AUDIO_DISCONNECTED" xml:space="preserve">
+    <value>Сервер аудиопотока корректно закрыл соединение до обмена данными. Пожалуйста, убедитесь, что серверное приложение всё ещё запущено и слушает запросы, и перезапустите его при необходимости.</value>
+  </data>
+  <data name="ERR_AUDIO_OPERATION_CANCELED" xml:space="preserve">
+    <value>Операция аудиопотока была отменена до завершения. Если вы не отменяли её вручную, пожалуйста, проверьте VPN, прокси или другие утилиты, которые могли прервать запрос.</value>
+  </data>
+  <data name="ERR_AUDIO_ERROR_HTTP_HEADER_NOT_FOUND" xml:space="preserve">
+    <value>В ответе сервера аудиопотока отсутствует обязательный HTTP‑заголовок. Пожалуйста, убедитесь, что клиент и сервер обновлены и что сервер отправляет все необходимые заголовки.</value>
+  </data>
+  <data name="ERR_AUDIO_ERROR_HTTP_INVALID_SERVER_RESPONSE" xml:space="preserve">
+    <value>Сервер вернул некорректный HTTP‑ответ для аудиопотока. Часто это означает, что вы подключаетесь к неверному сервису или порту. Пожалуйста, проверьте настройки.</value>
+  </data>
+  <data name="ERR_AUDIO_REDIRECT_FAILED" xml:space="preserve">
+    <value>Сервер попытался перенаправить запрос аудиопотока, но перенаправление не удалось. Пожалуйста, убедитесь, что вы не смешиваете HTTP→HTTPS (или наоборот), либо настройте сервер для приёма соединений по нужному протоколу и порту.</value>
+  </data>
+  <data name="ERR_AUDIO_UNEXPECTED_STATUS_CODE" xml:space="preserve">
+    <value>Сервер аудиопотока вернул неожиданный код состояния. Это может указывать на проблему на стороне сервера — пожалуйста, перезапустите сервер и проверьте логи.</value>
+  </data>
+  <data name="ERR_AUDIO_ACCESS_DENIED" xml:space="preserve">
+    <value>Доступ к аудиопотоку запрещён. Пожалуйста, проверьте правила брандмауэра и права пользователя, а также запустите приложение от имени администратора при необходимости.</value>
+  </data>
+  <data name="ERR_AUDIO_UNKNOWN" xml:space="preserve">
+    <value>Произошла неизвестная ошибка аудиопотока. Пожалуйста, отключите VPN или прокси, убедитесь, что оба устройства в одной сети, и повторите попытку соединения.</value>
+  </data>
+  <data name="ERR_AUDIO_CERTIFICATE_COMMON_NAME_INCORRECT" xml:space="preserve">
+    <value>Сертификат аудиопотока выдан не для указанного адреса. Пожалуйста, попросите вашего системного администратора выдать новый сертификат с корректным именем хоста или временно отключите шифрование для тестирования.</value>
+  </data>
+  <data name="ERR_AUDIO_CERTIFICATE_EXPIRED" xml:space="preserve">
+    <value>Срок действия сертификата аудиопотока истёк. Пожалуйста, попросите вашего системного администратора продлить или переиздать сертификат; до этого подключения будут небезопасны.</value>
+  </data>
+  <data name="ERR_AUDIO_CERTIFICATE_CONTAINS_ERRORS" xml:space="preserve">
+    <value>В сертификате аудиопотока обнаружены ошибки (например, неверная подпись или неподдерживаемый алгоритм). Пожалуйста, попросите вашего системного администратора проверить и переиздать корректный сертификат либо отключить шифрование для локальной отладки.</value>
+  </data>
+  <data name="ERR_AUDIO_CERTIFICATE_REVOKED" xml:space="preserve">
+    <value>Сертификат аудиопотока отозван центром сертификации. Пожалуйста, попросите вашего системного администратора установить действительный сертификат или перенастроить сервер.</value>
+  </data>
+  <data name="ERR_AUDIO_CERTIFICATE_INVALID" xml:space="preserve">
+    <value>Сертификат аудиопотока некорректен (структура нарушена или не соответствует стандартам). Пожалуйста, попросите вашего системного администратора установить правильный SSL‑сертификат.</value>
+  </data>
+  <data name="ERR_AUDIO_HTTP_TO_HTTPS_ON_REDIRECTION" xml:space="preserve">
+    <value>Сервер перенаправляет аудиопоток с HTTP на HTTPS, что клиент не поддерживает. Пожалуйста, подключитесь по HTTPS напрямую или уберите принудительное перенаправление на сервере.</value>
+  </data>
+  <data name="ERR_AUDIO_HTTPS_TO_HTTP_ON_REDIRECTION" xml:space="preserve">
+    <value>Сервер перенаправляет аудиопоток с HTTPS на HTTP, что небезопасно. Пожалуйста, проверьте правильность протокола в URL и перенастройте сервер, чтобы избежать смешения схем.</value>
+  </data>
+</root>
