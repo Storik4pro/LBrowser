@@ -1,2 +1,0 @@
-MainPackage=E:\Windows-Mobile-Browser-Streaming-main\BrowserClient\bin\x86\Release\BrowserClient_1.0.26.0_x86.appx
-SymbolPackage=E:\Windows-Mobile-Browser-Streaming-main\BrowserClient\obj\x86\Release\Symbols\BrowserClient_1.0.26.0_x86.appxsym
