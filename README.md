@@ -43,6 +43,8 @@ You Windows Mobile Phone
 Make shure you setup Server Deployment Assistant (SDA) on you PC, based on similar network with your phone. Read [this page](https://storik4pro.github.io/en-US/LBrowser/wiki/what-i-need-to-do-for-start/) for further information.
 
 ## Installation
+[![PenguinStoreBadge-en](https://github.com/user-attachments/assets/34d1be9d-ddf8-4599-b8d1-f6dd46586cec)](https://pinguin2001.github.io/redir.html?app=LinesBrowser)
+
 You can download application package on:
 - [Release page](https://github.com/Storik4pro/LBrowser/releases)
 - [Storik4pro.github.io](https://storik4pro.github.io/en-US/LBrowser/) (using download manager — for devices, who can't open github in browser)
