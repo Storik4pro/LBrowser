@@ -46,6 +46,7 @@ Make shure you setup Server Deployment Assistant (SDA) on you PC, based on simil
 [![PenguinStoreBadge-en](https://github.com/user-attachments/assets/34d1be9d-ddf8-4599-b8d1-f6dd46586cec)](https://pinguin2001.github.io/redir.html?app=LinesBrowser)
 
 You can download application package on:
+- [Penguin Store](https://pinguin2001.github.io/redir.html?app=LinesBrowser)
 - [Release page](https://github.com/Storik4pro/LBrowser/releases)
 - [Storik4pro.github.io](https://storik4pro.github.io/en-US/LBrowser/) (using download manager — for devices, who can't open github in browser)
 
@@ -91,6 +92,7 @@ You can download server application (SDA):
 
 ## Установка
 Вы можете установить пакет приложения следующими способами:
+- [Penguin Store](https://pinguin2001.github.io/redir.html?app=LinesBrowser)
 - [Страница релизов](https://github.com/Storik4pro/LBrowser/releases)
 - [Storik4pro.github.io](https://storik4pro.github.io/ru-RU/LBrowser/) (используя менеджер загрузок — для устройств, с которых невозможно зайти на сайт GitHub)
 
