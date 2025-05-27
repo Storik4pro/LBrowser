@@ -19,6 +19,26 @@ It requires a PC running Windows 10 or 11 on the same network as the phone. All 
 >[!Important]
 >You can explore project page for learn more information [storik4pro.github.io/en-US/LBrowser](https://storik4pro.github.io/en-US/LBrowser)
 
+## Requirements 
+You Windows PC
+| Parameter                    | Minimum Requirement                                 |
+|------------------------------|-----------------------------------------------------|
+| RAM                          | 4 GB or more                                        |
+| Storage                      | 500 MB or more of available disk space              |
+| Internet Connection          | Always-on Internet connection required              |
+| .NET Framework               | Microsoft .NET Framework 4.8                        |
+| Visual C++ Redistributable   | Microsoft Visual C++ 2015 Redistributable (x86/x64) version 14.0.24215 |
+| Operating System             | Windows 10 x64, build 19041 or later                |
+
+You Windows Mobile Phone 
+| Parameter                    | Minimum Requirement                                 |
+|------------------------------|-----------------------------------------------------|
+| Storage                      | 10 MB or more of available disk space               |
+| Internet Connection          | Always-on Internet connection required              |
+| Microsoft.VCLibs             | ARM 14.00                                           |
+| Microsoft .NET CoreRuntime   | 1.1                                                 |
+| Operating System             | Windows 10 Mobile Creators Update (10.0.15063.0) ARM32|
+
 ## Before the start
 Make shure you setup Server Deployment Assistant (SDA) on you PC, based on similar network with your phone. Read [this page](https://storik4pro.github.io/en-US/LBrowser/wiki/what-i-need-to-do-for-start/) for further information.
 
@@ -28,7 +48,7 @@ You can download application package on:
 - [Storik4pro.github.io](https://storik4pro.github.io/en-US/LBrowser/) (using download manager — for devices, who can't open github in browser)
 
 You can download server application (SDA):
-- [Release page of Lines Browser repo](https://github.com/Storik4pro/LBrowser/releases) (it is `SDA.exe` file)
+- [Release page of Lines Browser repo](https://github.com/Storik4pro/LBrowser/releases) (it is `SDA.zip` file)
 - [Release page of SDA repo](https://https://github.com/Storik4pro/Server-Deployment-Assistant/releases) (not recommended)
 - [Storik4pro.github.io](https://storik4pro.github.io/en-US/LBrowser/) (using download manager — for devices, who can't open github in browser)
 
