@@ -56,8 +56,10 @@
                 <StackPanel x:Name="ThanksPanel" Padding="10 0 0 0">
                     <!-- Something must to be here -->
                 </StackPanel>
+                <!--
                 <TextBlock x:Uid="Community" Margin="0 25 0 0" Style="{StaticResource CustomSubtitleTextBlockStyle}" TextWrapping="Wrap"/>
                 <TextBlock x:Uid="NothingErr"/>
+                -->
                 <TextBlock x:Uid="QuestionSettings" Margin="0 25 0 0" Style="{StaticResource SubtitleTextBlockStyle}" TextWrapping="Wrap"/>
                 <Grid Padding="10 5 10 0">
                     <Grid.ColumnDefinitions>
