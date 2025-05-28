@@ -91,6 +91,8 @@ You can download server application (SDA):
 Убедитесь, что вы установили и настроили Ассистент Развертывания Сервера (SDA) на ПК, находящемся в одной сети с телефоном. Прочтите [эту страницу](https://storik4pro.github.io/ru-RU/LBrowser/wiki/what-i-need-to-do-for-start/) для получения дополнительной инфрмации.
 
 ## Установка
+[![PenguinStoreBadge-ru](https://github.com/user-attachments/assets/b6b99989-afef-4d81-bedb-a9119034fa0e)](https://pinguin2001.github.io/redir.html?app=LinesBrowser)
+
 Вы можете установить пакет приложения следующими способами:
 - [Penguin Store](https://pinguin2001.github.io/redir.html?app=LinesBrowser)
 - [Страница релизов](https://github.com/Storik4pro/LBrowser/releases)
