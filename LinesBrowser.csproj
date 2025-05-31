@@ -132,6 +132,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Elements\PinToSymbolConverter.cs" />
+    <Compile Include="Helpers\StateHelper.cs" />
+    <Compile Include="Managers\RecentTabsManager.cs" />
     <Compile Include="Network\AudioStreamServer.cs" />
     <Compile Include="Network\BroadcastReceiver.cs" />
     <Compile Include="Helpers\ConnectionHelper.cs" />
@@ -146,6 +149,9 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Network\Packets.cs" />
+    <Compile Include="Pages\RecentTabsPage.xaml.cs">
+      <DependentUpon>RecentTabsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Pages\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
@@ -177,6 +183,9 @@
     </PRIResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\find_error.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\LargeTile.scale-100.png" />
     <Content Include="Assets\LargeTile.scale-125.png" />
     <Content Include="Assets\LargeTile.scale-150.png" />
@@ -249,6 +258,10 @@
     <Page Include="Pages\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Pages\RecentTabsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\SettingsPage.xaml">
       <SubType>Designer</SubType>
