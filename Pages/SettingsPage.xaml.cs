@@ -21,6 +21,7 @@ using Windows.ApplicationModel.Resources;
 using System.Diagnostics;
 using Windows.Storage;
 using System.Globalization;
+using LinesBrowser.Managers;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -72,6 +73,8 @@ namespace LinesBrowser
             SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
             AutoConnectCheckBox.IsChecked = settings.Values["AutoConnect"] as bool?;
 
+            RecentCheckBox.IsChecked = settings.Values["UseRecentFeature"] as bool?;
+
             string _langTag = CultureInfo.CurrentCulture.Name;
             string langTag;
 
@@ -84,10 +87,21 @@ namespace LinesBrowser
                 langTag = "en-US";
             }
 
-                WikiUrl.NavigateUri = new Uri($"https://storik4pro.github.io/{langTag}/LBrowser/wiki");
+            WikiUrl.NavigateUri = new Uri($"https://storik4pro.github.io/{langTag}/LBrowser/wiki");
+
+            RecentDeleteText.Text = string.Format(resourceLoader.GetString("RecentDeleteText"), "calculating ...", "");
+
+            SetupRecentStorageSize();
 
             // LagTextBox.Text = (settings.Values["preferredLag"] as string)?? "2";
         }
+
+        private async void SetupRecentStorageSize()
+        {
+            Tuple<string, string> data = await RecentTabsManager.GetRecentBytes();
+            RecentDeleteText.Text = string.Format(resourceLoader.GetString("RecentDeleteText"), data.Item1, data.Item2);
+        }
+
         private string GetSystemInfo()
         {
             var deviceFamily = AnalyticsInfo.VersionInfo.DeviceFamily;
@@ -165,6 +179,25 @@ namespace LinesBrowser
         private void AutoConnectCheckBox_Click(object sender, RoutedEventArgs e)
         {
             settings.Values["AutoConnect"] = AutoConnectCheckBox.IsChecked;
+        }
+
+        private void RecentCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            settings.Values["UseRecentFeature"] = RecentCheckBox.IsChecked;
+        }
+
+        private void CloseDataFlyoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            RecentDeleteFlyout.Hide();
+        }
+
+        private async void ApplyDataRemoveButton_Click(object sender, RoutedEventArgs e)
+        {
+            RecentDeleteFlyout.Hide();
+            await RecentTabsManager.DeleteAllUnusedScreenshots();
+            Tuple<string, string> data = await RecentTabsManager.GetRecentBytes();
+
+            RecentDeleteText.Text = string.Format(resourceLoader.GetString("RecentDeleteText"), data.Item1, data.Item2);
         }
     }
 }
