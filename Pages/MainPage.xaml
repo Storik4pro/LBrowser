@@ -233,22 +233,7 @@
 
             <TextBox Grid.Row="1" Visibility="Collapsed" Name="urlBar" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Bottom" PlaceholderText="Navigate or search" KeyDown="TextBox_KeyDown" IsTextPredictionEnabled="False" Background="{ThemeResource SystemControlBackgroundAccentBrush}" InputScope="Url" />
             <Rectangle Grid.Row="0" Name="ScaleRect" />
-            <Grid Name="TextInput" Visibility="Collapsed" VerticalAlignment="Bottom">
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="43*"/>
-                    <ColumnDefinition Width="267*"/>
-                    <ColumnDefinition Width="auto"/>
-                </Grid.ColumnDefinitions>
-                <Rectangle Margin="0,0,0,0" Fill="{ThemeResource SystemControlBackgroundAccentBrush}" Grid.ColumnSpan="2"/>
-
-                <TextBox Name="websiteTextBox" Text="" Grid.Column="0" PlaceholderText="Compose text and press enter to commit" 
-                         Grid.ColumnSpan="2" Margin="0,0,0,0" KeyUp="WebsiteTextBox_KeyUp" TextChanged="WebsiteTextBox_TextChanged" />
-                <Button Visibility="Collapsed" Name="SendText" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="2" Width="50" Background="{ThemeResource SystemControlBackgroundAccentBrush}" Margin="0,0,0,0" Click="SendText_Click">
-                    <Image IsHitTestVisible="False" Source="Assets/send.png"/>
-                </Button>
-
-            </Grid>
+            
         </Grid>
         <MediaPlayerElement
             x:Name="TestMediaPlayerElement"
@@ -260,13 +245,14 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="5"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <StackPanel x:Name="TabsPageHeader">
                 <local:UTextBlock x:Uid="Tabs" Text="TABS" FontWeight="SemiBold" Margin="10 10 0 0"/>
             </StackPanel>
-            <GridView Grid.Row="2" x:Name="TabsList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+            <GridView Grid.Row="3" x:Name="TabsList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                           IsItemClickEnabled="True" ItemClick="TabsList_ItemClick" SelectionMode="None" Padding="10 0 10 0">
                 <GridView.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -276,7 +262,7 @@
                 <GridView.ItemTemplate>
                     <DataTemplate>
                         <Border Width="200" Height="150" Margin="0" BorderBrush="Transparent" BorderThickness="1" 
-                                ToolTipService.ToolTip="{Binding Url}" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+                                ToolTipService.ToolTip="{Binding Title}" Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
                             <StackPanel>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -284,7 +270,7 @@
                                         <ColumnDefinition Width="5"/>
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding Url}" TextWrapping="NoWrap" 
+                                    <TextBlock Grid.Column="0" Text="{Binding Title}" TextWrapping="NoWrap" 
                                                FontSize="12" Margin="5" MaxHeight="20" Height="20">
                                     </TextBlock>
                                     <Button x:Name="CloseTabButton" Grid.Column="2" 
@@ -294,14 +280,21 @@
                                         </Button.Content>
                                     </Button>
                                 </Grid>
-                                <Image Source="{Binding Screenshot}" HorizontalAlignment="Stretch" Height="180" Stretch="UniformToFill" />
+                                <Image Source="{Binding Screenshot}" HorizontalAlignment="Stretch" Stretch="UniformToFill" />
                             </StackPanel>
                         </Border>
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
-            <CommandBar Grid.Row="3">
+            <CommandBar Grid.Row="4">
                 <CommandBar.PrimaryCommands>
+                    <AppBarButton x:Uid="Recent" x:Name="RecentButton" Label="Recent" Click="RecentButton_Click">
+                        <AppBarButton.Content>
+                            <StackPanel>
+                                <FontIcon Glyph="&#xE823;" />
+                            </StackPanel>
+                        </AppBarButton.Content>
+                    </AppBarButton>
                     <AppBarButton x:Uid="NewTab" x:Name="AddNewTabButton" Icon="Add" Label="New tab" Click="AddNewTabButton_Click"/>
 
                     <AppBarButton x:Uid="Close" Label="Close" Click="CloseTabsPageButton_Click">
@@ -316,7 +309,11 @@
         </Grid>
         <Canvas x:Name="OverlayFocus" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Collapsed" Canvas.ZIndex="1"
                 Tapped="OverlayFocus_Tapped">
-            <Rectangle x:Name="OverlayFocusRectangle" Fill="#000000" Width="1000" Height="1000" Opacity="0.8"/>
+            <Rectangle x:Name="OverlayFocusRectangle" Fill="#000000" Width="4000" Height="4000" Opacity="0.8"/>
+        </Canvas>
+        <Canvas x:Name="OverlayInvisibleFocus" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Collapsed" Canvas.ZIndex="1"
+                Tapped="OverlayInvisibleFocus_Tapped">
+            <Rectangle x:Name="OverlayInvisibleFocusRectangle" Fill="#000000" Width="4000" Height="4000" Opacity="0"/>
         </Canvas>
         <Canvas x:Name="OverlaySettingsLinks" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Visibility="Visible" Canvas.ZIndex="99" >
             <Grid x:Name="OverlaySettingsLinksGrid" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
@@ -438,7 +435,7 @@
 
             </Grid>
         </Canvas>
-        <Canvas x:Name="OverlayCanvas" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Canvas.ZIndex="101" >
+        <Canvas x:Name="OverlayCanvas" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Canvas.ZIndex="102" >
             <Grid x:Name="EntryNavBar" Visibility="Collapsed" Height="50" Width="Auto" 
                   Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
                 <TextBox Name="urlField" HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Stretch" 
@@ -446,6 +443,18 @@
                      IsTextPredictionEnabled="False" Background="{ThemeResource SystemControlBackgroundAccentBrush}" 
                      InputScope="Url" LostFocus="urlField_LostFocus" Style="{x:Bind CenterTextBoxStyle}" 
                      BorderThickness="0"/>
+            </Grid>
+        </Canvas>
+        <Canvas x:Name="TextInputOverlayCanvas" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Canvas.ZIndex="101">
+            <Grid Name="TextInput" Visibility="Collapsed" Height="50" Width="Auto" 
+                  Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+
+                <TextBox Name="websiteTextBox" HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Stretch" 
+                         PlaceholderText="Compose text and press enter to commit" Background="{ThemeResource SystemControlBackgroundAccentBrush}" 
+                         Style="{x:Bind CenterTextBoxStyle}" BorderThickness="0"
+                         KeyUp="WebsiteTextBox_KeyUp" TextChanged="WebsiteTextBox_TextChanged" />
+                
+
             </Grid>
         </Canvas>
 
