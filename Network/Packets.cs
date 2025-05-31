@@ -36,6 +36,8 @@ namespace LinesBrowser
         EditOpenTabTitle,
         IsClientCanSendGoBackRequest,
         IsClientCanSendGoForwardRequest,
+        Handshake,
+        ConnectionState,
     }
 
     public enum PacketType
@@ -64,6 +66,13 @@ namespace LinesBrowser
         SendKeyCommand,
         SendChar,
     }
+    public class HandshakePacket
+    {
+        public TextPacketType PType { get; set; } = TextPacketType.Handshake;
+        public string ServerVersion { get; set; }
+        public string[] Features { get; set; }
+    }
+
     public struct DiscoveryPacket
     {
         public DiscoveryPacketType PType;
