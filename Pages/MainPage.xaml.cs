@@ -27,6 +27,10 @@ using System.ComponentModel;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Core;
 using Windows.System.Display;
+using LinesBrowser.Managers;
+using LinesBrowser.Helpers;
+using Windows.ApplicationModel.Resources;
+using Windows.UI.Xaml.Navigation;
 
 namespace LinesBrowser
 {
@@ -53,6 +57,9 @@ namespace LinesBrowser
 
         private bool isCanGoBack = false;
         private bool isCanGoForward = false;
+
+        private static ResourceLoader resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
+        ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
         public MainPage()
         {
             this.InitializeComponent();
@@ -61,7 +68,7 @@ namespace LinesBrowser
                 Windows.UI.ViewManagement.StatusBar statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
                 _ = statusBar?.HideAsync();
             }
-            ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            
             ApplicationView.GetForCurrentView().VisibleBoundsChanged += OnVisibleBoundsChanged;
 
             if (localSettings.Values.ContainsKey("LastServerUrl"))
@@ -80,6 +87,8 @@ namespace LinesBrowser
             EntryNavBar.Width = Window.Current.Bounds.Width;
             Window.Current.SizeChanged += Current_SizeChanged;
             Canvas.SetTop(EntryNavBar, Window.Current.Bounds.Height - EntryNavBar.Height);
+            Canvas.SetTop(TextInput, Window.Current.Bounds.Height - EntryNavBar.Height);
+            TextInput.Width = EntryNavBar.Width;
 
             MoreSettingsGrid.Width = Window.Current.Bounds.Width;
             OverlaySettingsLinksGrid.Width = MoreSettingsGrid.Width;
@@ -95,6 +104,19 @@ namespace LinesBrowser
 
             DisplayRequest displayRequest = new DisplayRequest();
             displayRequest.RequestActive();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if (e.Parameter is string routeParameter)
+            {
+                if (routeParameter == "/tabs")
+                {
+                    OpenTabsPage();
+                }
+            }
         }
 
         private void OnBackRequested(object sender, BackRequestedEventArgs e)
@@ -192,6 +214,8 @@ namespace LinesBrowser
 
             Canvas.SetTop(EntryNavBar, visible.Height - EntryNavBar.Height);
             EntryNavBar.Width = visible.Width;
+            Canvas.SetTop(TextInput, visible.Height - EntryNavBar.Height);
+            TextInput.Width = visible.Width;
             MoreSettingsGrid.Width = visible.Width;
             NavbarGrid.Width = visible.Width;
             ScreenshotImage.Width = visible.Width;
@@ -262,6 +286,9 @@ namespace LinesBrowser
             var x = e.GetCurrentPoint(null).Position.X / ScaleRect.ActualWidth;
             var y = e.GetCurrentPoint(null).Position.Y / ScaleRect.ActualHeight;
             webBrowserDataSource?.TouchDown(new Point(x, y), e.Pointer.PointerId);
+
+            NavbarGrid.Visibility = Visibility.Visible;
+            TextInput.Visibility = Visibility.Collapsed;
         }
 
         private void Test_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
@@ -344,7 +371,7 @@ namespace LinesBrowser
                             var tabToUpdate = tabs.FirstOrDefault(tab => tab.Id == id);
                             if (tabToUpdate != null)
                             {
-                                tabToUpdate.Url = title;
+                                tabToUpdate.Title = title;
                             }
 
                         }
@@ -714,6 +741,28 @@ namespace LinesBrowser
             OverlaySettingsLinks.Visibility = Visibility.Collapsed;
         }
 
+        private void OpenTabsPage()
+        {
+            if (tabs.Count == 0)
+            {
+                webBrowserDataSource.SendGetTabsRequest();
+            }
+            if (tabs.Count > 0)
+            {
+                if (activeTabId != 0)
+                {
+                    _ = UpdateScreenshotAsync(activeTabId);
+
+                }
+            }
+            TabsGrid.Visibility = Visibility.Visible;
+            browser.Visibility = Visibility.Collapsed;
+            TabsList.UpdateLayout();
+            NavBarStoryboardShow.Stop();
+            NavBarStoryboardHide.Begin();
+            SetupTabWidth();
+        }
+
         private void ViewPages_Click(object sender, RoutedEventArgs e)
         {
             ToggleSettingsOverlay(false);
@@ -724,25 +773,7 @@ namespace LinesBrowser
             }
             else
             {
-                if (tabs.Count == 0)
-                {
-                    webBrowserDataSource.SendGetTabsRequest();
-                }
-                if (tabs.Count > 0)
-                {
-                    if (activeTabId != 0)
-                    {
-                        _ = UpdateScreenshotAsync(activeTabId);
-
-                    }
-                }
-                TabsGrid.Visibility = Visibility.Visible;
-                browser.Visibility = Visibility.Collapsed;
-                TabsList.UpdateLayout();
-                NavBarStoryboardShow.Stop();
-                NavBarStoryboardHide.Begin();
-                SetupTabWidth();
-
+                OpenTabsPage();
             }
         }
 
@@ -781,19 +812,21 @@ namespace LinesBrowser
         private ObservableCollection<TabItem> tabs = new ObservableCollection<TabItem>();
         public class TabItem : INotifyPropertyChanged
         {
-            private string url;
+            private string title;
 
             public long Id { get; set; }
 
-            public string Url
+            public string Url { get; set; }
+
+            public string Title
             {
-                get => url;
+                get => title;
                 set
                 {
-                    if (url != value)
+                    if (title != value)
                     {
-                        url = value;
-                        OnPropertyChanged(nameof(Url));
+                        title = value;
+                        OnPropertyChanged(nameof(Title));
                     }
                 }
             }
@@ -847,18 +880,36 @@ namespace LinesBrowser
         private async void UpdateTabsGrid(List<string> urls)
         {
             tabs.Clear();
+            StateHelper.Instance.OpenedTabsId.Clear();
 
             foreach (var url in urls)
             {
                 var splitUrl = url.Split('|').ToList();
                 Int64.TryParse(splitUrl[1], out long id);
-                var title = splitUrl[0]; 
+                var title = splitUrl[0];
+                string _url = "NaN";
+                if (splitUrl.Count == 3)
+                {
+                    _url = splitUrl[2];
+                }
                 tabs.Add(new TabItem
                 {
                     Id = id,
-                    Url = title,
+                    Url = _url,
+                    Title = title,
                     Screenshot = await GetScreenshotForUrl(id), 
                 });
+                StateHelper.Instance.OpenedTabsId.Add(id);
+                if (_url != "NaN")
+                {
+                    await RecentTabsManager.AddRecentTabAsync(new RecentTabInfo
+                    {
+                        Id = id,
+                        Url = _url,
+                        Title = title,
+                        ClosedAt = DateTime.UtcNow
+                    });
+                }
             }
             TabsList.ItemsSource = tabs;
 
@@ -987,6 +1038,7 @@ namespace LinesBrowser
 
             if (item != null)
             {
+                _ = RecentTabsManager.RemoveRecentTabAsync(item.Id);
                 webBrowserDataSource.CloseTab(item.Id);
                 tabs.Remove(item);
             }
@@ -1010,6 +1062,47 @@ namespace LinesBrowser
                     };
                     await dialog.ShowAsync();
                 });
+        }
+
+        public async void OpenTabFromRecent(RecentTabInfo tab)
+        {
+            webBrowserDataSource.CreateNewTabWithUrl(tab.Url);
+            if (!tab.IsPinned)
+                await RecentTabsManager.RemoveRecentTabAsync(tab.Id);
+        }
+
+        public List<long> GetOpenTabIds()
+        {
+            return tabs.Select(t => t.Id).ToList();
+        }
+
+        private void RecentButton_Click(object sender, RoutedEventArgs e)
+        {
+            string featureName = "RECENT";
+            if (StateHelper.Instance.AvailableFeatures == null ||
+                !StateHelper.Instance.AvailableFeatures.Contains(featureName))
+            {
+                _ = ShowErrorDialogAsync(
+                    resourceLoader.GetString("FeatureNotSupportedTitle"),
+                    string.Format(resourceLoader.GetString("FeatureNotSupported"), featureName, "1.0.1.0")
+                    );
+            }
+            else if (!(bool)localSettings.Values["UseRecentFeature"])
+            {
+                _ = ShowErrorDialogAsync(
+                    resourceLoader.GetString("FeatureDisabledTitle"),
+                    string.Format(resourceLoader.GetString("FeatureDisabled"), featureName)
+                    );
+            }
+            else
+            {
+                Frame.Navigate(typeof(LinesBrowser.Pages.RecentTabsPage));
+            }
+        }
+
+        private void OverlayInvisibleFocus_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+        {
+
         }
     }
 }
