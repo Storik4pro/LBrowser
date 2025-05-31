@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Globalization;
 using Windows.Storage;
+using LinesBrowser.Managers;
 
 namespace LinesBrowser
 {
@@ -26,6 +27,7 @@ namespace LinesBrowser
     sealed partial class App : Application
     {
         private static ApplicationDataContainer localSettings = ApplicationData.Current.LocalSettings;
+        public LinesBrowser.MainPage MainPageInstance { get; set; }
         Frame rootFrame = Window.Current.Content as Frame;
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -55,7 +57,15 @@ namespace LinesBrowser
             {
 
             }
-            
+            if (localSettings.Values["UseRecentFeature"] is null)
+            {
+                localSettings.Values["UseRecentFeature"] = true;
+            }
+
+            if (!(bool)localSettings.Values["UseRecentFeature"])
+            {
+                _ = RecentTabsManager.DeleteAllUnusedScreenshots();
+            }
 
             ConnectionHelper.Instance.OnDisconnected += ConnectionHelper_OnDisconnected;
 
@@ -76,6 +86,12 @@ namespace LinesBrowser
                 // Place the frame in the current Window
                 Window.Current.Content = rootFrame;
             }
+
+            rootFrame.Navigated += (s, args) =>
+            {
+                if (args.Content is LinesBrowser.MainPage mp)
+                    this.MainPageInstance = mp;
+            };
 
             if (e.PrelaunchActivated == false)
             {
