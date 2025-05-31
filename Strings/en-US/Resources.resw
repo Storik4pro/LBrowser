@@ -320,4 +320,58 @@ To use Lines Browser, you'll need to set up your Windows 10 or 11 PC with the Se
   <data name="AppShortName" xml:space="preserve">
     <value>L-Browser</value>
   </data>
+  <data name="FeatureNotSupported" xml:space="preserve">
+    <value>Feature "{0}" is not supported on current Server Deployment Assistant. For use "{0}" feature you need version {1} or latest.</value>
+  </data>
+  <data name="FeatureNotSupportedTitle" xml:space="preserve">
+    <value>Feature is not supported</value>
+  </data>
+  <data name="Recent.Label" xml:space="preserve">
+    <value>Recent</value>
+  </data>
+  <data name="ServerVersionNotSupported" xml:space="preserve">
+    <value>Server is not supported. Please, install newest version of Server Deployment Assistant.</value>
+  </data>
+  <data name="ServerVersionOutOfDate" xml:space="preserve">
+    <value>Server version is out-of-date. Please, update Server Deployment Assistant to newest version.</value>
+  </data>
+  <data name="FeatureDisabled" xml:space="preserve">
+    <value>Feature "{0}" is disabled. To use "{0}", turn in on in application settings</value>
+  </data>
+  <data name="FeatureDisabledTitle" xml:space="preserve">
+    <value>Feature is disabled</value>
+  </data>
+  <data name="ActionCannotBeUndo.Text" xml:space="preserve">
+    <value>This action cannot be undo.</value>
+  </data>
+  <data name="AreYouSureYouWantDelete.Text" xml:space="preserve">
+    <value>Are you sure you want to delete all you recent data?</value>
+  </data>
+  <data name="BackAppBarButton.Label" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="DataManagerTitle.Text" xml:space="preserve">
+    <value>Data manager</value>
+  </data>
+  <data name="DeleteAllRecentDataButton.Content" xml:space="preserve">
+    <value>Delete all recent data</value>
+  </data>
+  <data name="No.Content" xml:space="preserve">
+    <value>no</value>
+  </data>
+  <data name="RecentCheckBox.Content" xml:space="preserve">
+    <value>Allow to collect and store data about visiting sites</value>
+  </data>
+  <data name="RecentDeleteText" xml:space="preserve">
+    <value>Now recent feature used {0} {1} of your storage. Click "Delete all recent data", to delete all files (You pinned tabs will be removed too.)</value>
+  </data>
+  <data name="RecentText.Text" xml:space="preserve">
+    <value>Recent</value>
+  </data>
+  <data name="Search.PlaceholderText" xml:space="preserve">
+    <value>Type here to search ...</value>
+  </data>
+  <data name="Yes.Content" xml:space="preserve">
+    <value>yes</value>
+  </data>
 </root>
