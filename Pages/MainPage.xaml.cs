@@ -31,6 +31,8 @@ using LinesBrowser.Managers;
 using LinesBrowser.Helpers;
 using Windows.ApplicationModel.Resources;
 using Windows.UI.Xaml.Navigation;
+using Windows.Foundation.Metadata;
+using Windows.Phone.UI.Input;
 
 namespace LinesBrowser
 {
@@ -60,6 +62,7 @@ namespace LinesBrowser
 
         private static ResourceLoader resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
         ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -93,6 +96,8 @@ namespace LinesBrowser
             MoreSettingsGrid.Width = Window.Current.Bounds.Width;
             OverlaySettingsLinksGrid.Width = MoreSettingsGrid.Width;
             NavbarGrid.Width = MoreSettingsGrid.Width;
+            CertGrid.Width = MoreSettingsGrid.Width;
+            CertGrid.Height = Window.Current.Bounds.Height;
             Canvas.SetTop(MoreSettingsGrid, Window.Current.Bounds.Height - EntryNavBar.Height - MoreSettingsGrid.Height);
             MoreSettingsAppBar.Loaded += MoreSettingsAppBar_Loaded;
 
@@ -102,8 +107,16 @@ namespace LinesBrowser
 
             SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
 
+            if (ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1, 0))
+            {
+                Windows.Phone.UI.Input.HardwareButtons.BackPressed += OnBackButtonPressed;
+            }
+
             DisplayRequest displayRequest = new DisplayRequest();
             displayRequest.RequestActive();
+
+            ConnectionHelper.Instance.webBrowserDataSource.RequestCert();
+
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -119,16 +132,31 @@ namespace LinesBrowser
             }
         }
 
-        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        public bool GoAppBack()
         {
-            if (sender != this)
-                return;
+            if (CertGrid.Visibility == Visibility.Visible)
+            {
+                CertGrid.Visibility = Visibility.Collapsed;
+                return true;
+            }
             if (isCanGoBack)
             {
                 webBrowserDataSource.NavigateBack();
                 TogglePageLoadingMode(true);
-                e.Handled = true;
+                return true;
             }
+            return false;
+        }
+
+        private void OnBackButtonPressed(object sender, BackPressedEventArgs e)
+        {
+            GoAppBack();
+            e.Handled = true;
+        }
+
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            GoAppBack();
             e.Handled = true;
         }
 
@@ -149,6 +177,9 @@ namespace LinesBrowser
 
             test.Height = visible.Height - NavbarGrid.Height;
             test.Width = visible.Width;
+
+            CertGrid.Width = visible.Width;
+            CertGrid.Height = visible.Height;
         }
 
         const double MINTABWIDTH = 150;
@@ -220,6 +251,9 @@ namespace LinesBrowser
             NavbarGrid.Width = visible.Width;
             ScreenshotImage.Width = visible.Width;
             OverlaySettingsLinksGrid.Width = MoreSettingsGrid.Width;
+
+            CertGrid.Width = visible.Width;
+            CertGrid.Height = visible.Height;
 
             OverlayFocusRectangle.Height = visible.Height;
             OverlayFocusRectangle.Width = visible.Width;
@@ -341,17 +375,18 @@ namespace LinesBrowser
             };
             webBrowserDataSource.TextPacketReceived += (s, o) =>
             {
-                switch (o.PType)
+                TextPacket textPacket = JsonConvert.DeserializeObject<TextPacket>(o);
+                switch (textPacket.PType)
                 {
                     case TextPacketType.NavigatedUrl:
-                        urlField.Text = o.text;
-                        urlViewField.Text = o.text;
+                        urlField.Text = textPacket.text;
+                        urlViewField.Text = textPacket.text;
                         webBrowserDataSource.SizeChange(new Size { Width = ScaleRect.ActualWidth, Height = ScaleRect.ActualHeight });
                         break;
 
                     case TextPacketType.OpenPages:
                         _ = UpdateScreenshotAsync(activeTabId);
-                        var pages = o.text.Split(';').ToList();
+                        var pages = textPacket.text.Split(';').ToList();
                         var lastPage = pages.Last().Split('|').ToList()[1];
                         UpdateTabsGrid(pages);
                         long _lastPage = 000000;
@@ -362,7 +397,7 @@ namespace LinesBrowser
                         break;
 
                     case TextPacketType.EditOpenTabTitle:
-                        var splitUrl = o.text.Split('|').ToList();
+                        var splitUrl = textPacket.text.Split('|').ToList();
                         if (splitUrl.Count >= 2)
                         {
                             Int64.TryParse(splitUrl[1], out long id);
@@ -380,8 +415,8 @@ namespace LinesBrowser
                     case TextPacketType.TextInputContent:
                         NavbarGrid.Visibility = Visibility.Collapsed;
                         TextInput.Visibility = Visibility.Visible;
-                        Debug.WriteLine($"TEXT > {o.text}");
-                        websiteTextBox.Text = o.text?? "";
+                        Debug.WriteLine($"TEXT > {textPacket.text}");
+                        websiteTextBox.Text = textPacket.text?? "";
                         websiteTextBox.Select(websiteTextBox.Text.Length, 0);
                         websiteTextBox.Focus(FocusState.Programmatic);
                         break;
@@ -395,7 +430,7 @@ namespace LinesBrowser
                         websiteTextBox.Text = "";
                         break;
                     case TextPacketType.LoadingStateChanged:
-                        if (o.text == "LOADING")
+                        if (textPacket.text == "LOADING")
                         {
                             TogglePageLoadingMode(true);
                             webBrowserDataSource.isServerLoadingComplete = false;
@@ -406,7 +441,7 @@ namespace LinesBrowser
                         }
                         break;
                     case TextPacketType.IsClientCanSendGoBackRequest:
-                        if (o.text == "true")
+                        if (textPacket.text == "true")
                         {
                             isCanGoBack = true;
                             BackButton.IsEnabled = isCanGoBack;
@@ -418,7 +453,7 @@ namespace LinesBrowser
                         }
                         break;
                     case TextPacketType.IsClientCanSendGoForwardRequest:
-                        if (o.text == "true")
+                        if (textPacket.text == "true")
                         {
                             isCanGoForward = true;
                             ForwardButton.IsEnabled = isCanGoForward;
@@ -428,6 +463,14 @@ namespace LinesBrowser
                             isCanGoForward = false;
                             ForwardButton.IsEnabled = isCanGoForward;
                         }
+                        break;
+                    case TextPacketType.ConnectionState:
+                        ConnectionSecurePacket connectionSecurePacket = JsonConvert.DeserializeObject<ConnectionSecurePacket>(o);
+                        Debug.WriteLine(connectionSecurePacket.Issuer);
+
+                        TogglePageLoadingMode(false);
+                        webBrowserDataSource.isServerLoadingComplete = true;
+                        PopulateInfoGrid(connectionSecurePacket);
                         break;
                 }
             };
@@ -1082,9 +1125,11 @@ namespace LinesBrowser
             if (StateHelper.Instance.AvailableFeatures == null ||
                 !StateHelper.Instance.AvailableFeatures.Contains(featureName))
             {
+                var formatString = resourceLoader.GetString("FeatureNotSupported");
+                var text = string.Format(formatString, featureName, "1.0.1.0");
                 _ = ShowErrorDialogAsync(
                     resourceLoader.GetString("FeatureNotSupportedTitle"),
-                    string.Format(resourceLoader.GetString("FeatureNotSupported"), featureName, "1.0.1.0")
+                   text
                     );
             }
             else if (!(bool)localSettings.Values["UseRecentFeature"])
@@ -1103,6 +1148,147 @@ namespace LinesBrowser
         private void OverlayInvisibleFocus_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
 
+        }
+
+        private void PopulateInfoGrid(ConnectionSecurePacket data)
+        {
+            CertViewButton.Visibility = Visibility.Visible;
+            InfoGrid.RowDefinitions.Clear();
+            InfoGrid.Children.Clear();
+
+            string issuerDN = data.Issuer;
+            Dictionary<string, string> dnParts = CertHelper.ParseDistinguishedName(issuerDN);
+
+            string Country = dnParts.ContainsKey("C") ? dnParts["C"] : string.Empty;
+            string Organization = dnParts.ContainsKey("O") ? dnParts["O"] : string.Empty;
+            string IssuerOrgUnit = dnParts.ContainsKey("OU") ? dnParts["OU"] : string.Empty;
+            string Name = dnParts.ContainsKey("CN") ? dnParts["CN"] : string.Empty;
+            string IssuerLocality = dnParts.ContainsKey("L") ? dnParts["L"] : string.Empty;
+            string IssuerState = dnParts.ContainsKey("ST") ? dnParts["ST"] : string.Empty;
+            string IssuerEmail = dnParts.ContainsKey("E") ? dnParts["E"] : string.Empty;
+
+            IssuerNameTextBlock.Text = Organization;
+
+            int row = 0;
+            CertURLTextBlock.Text = data.Url;
+
+            CertErrorTextBlock.Text = resourceLoader.GetString("No/Content");
+            CertCorrectText.Text = resourceLoader.GetString("Correct");
+            CertCorrectIcon.Glyph = "\uE930";
+
+            SecureTextBlock.Text = resourceLoader.GetString("Insecure");
+            SecureFontIcon.Glyph = "\uE785";
+
+            ServerConnectionTextBlock.Text = resourceLoader.GetString("Insecure");
+
+            ConnectionInfoTextBlock.Text = resourceLoader.GetString("ConnectionServerSecureError");
+
+            ConnectionStatusFontIcon.Glyph = "";
+
+            if (data.IsSecureConnection)
+            {
+                SecureTextBlock.Text = resourceLoader.GetString("Secure");
+                SecureFontIcon.Glyph = "\uE72E";
+            }
+
+            if (data.CertificateError)
+            {
+                CertErrorTextBlock.Visibility = Visibility.Visible;
+                CertErrorTextBlock.Text = data.CertificateErrorName;
+                CertCorrectText.Text = resourceLoader.GetString("Incorrect");
+                CertCorrectIcon.Glyph = "\uEA39";
+                SecureTextBlock.Text = resourceLoader.GetString("Insecure");
+                SecureFontIcon.Glyph = "\uE785";
+                ConnectionStatusFontIcon.Glyph = "\uE7BA";
+                ConnectionInfoTextBlock.Text = resourceLoader.GetString("ConnectionCertSecureError");
+
+            }
+
+
+            CertTslTextBlock.Text = data.TlsVersion;
+
+
+            AddPairRow($"{resourceLoader.GetString("Name")}:", SafeString(data.Subject).Replace("CN=", ""), ref row);
+
+            AddPairRow($"{resourceLoader.GetString("Country")} (C):", SafeString(Country), ref row);
+            AddPairRow($"{resourceLoader.GetString("Organization")} (O):", SafeString(Organization), ref row);
+            AddPairRow($"{resourceLoader.GetString("OrganizationalUnit")} (OU):", SafeString(IssuerOrgUnit), ref row);
+            AddPairRow($"{resourceLoader.GetString("Name")} (CN):", SafeString(Name), ref row);
+            AddPairRow($"{resourceLoader.GetString("Locality")} (L):", SafeString(IssuerLocality), ref row);
+
+            AddPairRow($"{resourceLoader.GetString("ValidFrom")}:", data.ValidFromTime == DateTime.MinValue ? "-" : data.ValidFromTime.ToString("yyyy-MM-dd HH:mm:ss"), ref row);
+            AddPairRow($"{resourceLoader.GetString("ValidTo")}:", data.ValidToTime == DateTime.MinValue ? "-" : data.ValidToTime.ToString("yyyy-MM-dd HH:mm:ss"), ref row);
+
+            AddPairRow($"Thumbprint:", SafeString(data.Thumbprint), ref row);
+            AddPairRow($"Serial No:", SafeString(data.SerialNumber), ref row);
+            AddPairRow($"Public Key:", SafeString(data.PublicKey), ref row);
+        }
+
+        private string SafeString(string s)
+        {
+            return string.IsNullOrWhiteSpace(s) ? resourceLoader.GetString("NotInCert") : s;
+        }
+
+        private void AddSectionHeader(string headerText, ref int rowIndex)
+        {
+            InfoGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+
+            var header = new TextBlock
+            {
+                Text = headerText,
+
+                FontSize = 16,
+                Margin = new Thickness(0, 10, 0, 5) 
+            };
+
+            Grid.SetRow(header, rowIndex);
+            Grid.SetColumn(header, 0);
+            Grid.SetColumnSpan(header, 3);
+
+            InfoGrid.Children.Add(header);
+
+            rowIndex++;
+        }
+
+        private void AddPairRow(string label, string value, ref int rowIndex)
+        {
+            InfoGrid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            var tbLabel = new TextBlock
+            {
+                Text = label,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                Margin = new Thickness(0, 0, 0, 5)
+            };
+            Grid.SetRow(tbLabel, rowIndex);
+            Grid.SetColumn(tbLabel, 0);
+            InfoGrid.Children.Add(tbLabel);
+
+            var tbValue = new TextBlock
+            {
+                IsTextSelectionEnabled = true,
+                Text = value,
+                TextWrapping = TextWrapping.Wrap,
+                HorizontalAlignment = HorizontalAlignment.Left,
+                Margin = new Thickness(0, 0, 0, 5)
+            };
+            Grid.SetRow(tbValue, rowIndex);
+            Grid.SetColumn(tbValue, 2);
+            InfoGrid.Children.Add(tbValue);
+
+            rowIndex++;
+        }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            CertGrid.Visibility = Visibility.Collapsed;
+        }
+
+        private void CertViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            CertGrid.Visibility = Visibility.Visible;
+            CertFlyout.Hide();
         }
     }
 }
