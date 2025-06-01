@@ -5,7 +5,7 @@
     xmlns:local="using:LinesBrowser"
     
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:helpers="using:LinesBrowser.Helpers"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" SizeChanged="Page_SizeChanged">
 
@@ -171,7 +171,7 @@
                     <ExponentialEase Exponent="6"  EasingMode="EaseOut"/>
                 </DoubleAnimation.EasingFunction>
             </DoubleAnimation>
-            
+
         </Storyboard>
         <Storyboard x:Name="SettingsLinksGridStoryboardHide">
             <DoubleAnimation x:Name="SettingsLinksGridHide" Storyboard.TargetName="SettingsLinksGridTransform"
@@ -196,7 +196,7 @@
                 <DoubleAnimation.EasingFunction>
                     <ExponentialEase Exponent="6" EasingMode="EaseInOut"/>
                 </DoubleAnimation.EasingFunction>
-                
+
             </DoubleAnimation>
         </Storyboard>
         <Storyboard x:Name="NavBarStoryboardHide">
@@ -233,7 +233,7 @@
 
             <TextBox Grid.Row="1" Visibility="Collapsed" Name="urlBar" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Bottom" PlaceholderText="Navigate or search" KeyDown="TextBox_KeyDown" IsTextPredictionEnabled="False" Background="{ThemeResource SystemControlBackgroundAccentBrush}" InputScope="Url" />
             <Rectangle Grid.Row="0" Name="ScaleRect" />
-            
+
         </Grid>
         <MediaPlayerElement
             x:Name="TestMediaPlayerElement"
@@ -399,12 +399,65 @@
                             <Button.Content>
                                 <FontIcon x:Name="ConnectionStatusFontIcon" Glyph="&#xE72E;" FontSize="15"/>
                             </Button.Content>
+                            <Button.Flyout>
+                                <Flyout x:Name="CertFlyout">
+                                    <StackPanel>
+                                        <TextBlock x:Uid="WebSiteIdentity" Style="{StaticResource CustomSubtitleTextBlockStyle}" 
+                                                   Text="Web-site identification" Margin="0"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="170"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel>
+                                                <TextBlock x:Uid="ConnectionToSite" Text="Connection to site" />
+                                                <TextBlock x:Uid="Certificate" Margin="10 0 0 0" Text="Certificate"/>
+                                                <TextBlock x:Uid="CertificateIssuer" Margin="10 0 0 0" Text="Certificate issuer"/>
+                                                <TextBlock />
+                                                <TextBlock x:Uid="ServerConnection" Margin="0 10 0 0" Text="Connection to server" />
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <FontIcon x:Name="SecureFontIcon" Glyph="&#xE9CE;" FontSize="15" Margin="0 0 6 0"/>
+                                                    <TextBlock x:Name="SecureTextBlock" Text="UNKNOWN" />
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <FontIcon x:Name="CertCorrectIcon" Glyph="&#xE9CE;" FontSize="15" Margin="0 0 6 0"/>
+                                                    <TextBlock x:Name="CertCorrectText" Text="UNKNOWN" />
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <FontIcon Glyph="&#xEA18;" FontSize="15" Margin="0 0 6 0"/>
+                                                    <TextBlock x:Name="IssuerNameTextBlock" Text="UNKNOWN" />
+                                                </StackPanel>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <HyperlinkButton x:Name="CertViewButton" Visibility="Collapsed" x:Uid="ViewCert" Content="View sertificate" Margin="0" Padding="0" 
+                                                                     Click="CertViewButton_Click"/>
+                                                </StackPanel>
+                                                <StackPanel Margin="0 10 0 0" Orientation="Horizontal">
+                                                    <FontIcon Glyph="&#xE785;" FontSize="15" Margin="0 0 6 0"/>
+                                                    <TextBlock x:Name="ServerConnectionTextBlock" Text="UNKNOWN" />
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Grid>
+                                        <TextBlock />
+                                        <Grid Padding="10 5 10 0">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="auto"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <FontIcon Glyph="&#xE946;" FontSize="16" HorizontalAlignment="Center"/>
+                                            <TextBlock Grid.Column="1" Margin="6 0 0 0" MaxWidth="300" Name="ConnectionInfoTextBlock" Text="" 
+                                                       VerticalAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Left"/>
+                                        </Grid>
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
                         </Button>
                         <ProgressRing x:Name="PageLoadingRing" Grid.Column="3" Width="20" Height="20" IsActive="True" Margin="0 0 5 0"/>
                         <ScrollViewer Grid.Column="4" HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Hidden" Tapped="urlViewField_Tapped">
                             <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                   Margin="0" Tapped="urlViewField_Tapped">
-                                 <TextBlock Name="urlViewField" Grid.Column="3" Visibility="Visible" 
+                                <TextBlock Name="urlViewField" Grid.Column="3" Visibility="Visible" 
                                  Margin="0,0,0,0" VerticalAlignment="Center" 
                                  Tapped="urlViewField_Tapped" HorizontalAlignment="Stretch" 
                                  >
@@ -453,8 +506,112 @@
                          PlaceholderText="Compose text and press enter to commit" Background="{ThemeResource SystemControlBackgroundAccentBrush}" 
                          Style="{x:Bind CenterTextBoxStyle}" BorderThickness="0"
                          KeyUp="WebsiteTextBox_KeyUp" TextChanged="WebsiteTextBox_TextChanged" />
-                
 
+
+            </Grid>
+        </Canvas>
+
+        <Canvas x:Name="CertCanvas" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Canvas.ZIndex="110">
+            <Grid Name="CertGrid" Visibility="Collapsed"
+                  Background="{ThemeResource SystemControlBackgroundChromeMediumBrush}">
+                <Rectangle Fill="#000000" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"  Opacity="1"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <local:UTextBlock x:Uid="CertInfo" x:Name="PageTitleTextBlock" Style="{StaticResource UCustomBaseTextBlockStyle}" 
+                                      Text="Certificate information" Margin="10 10 0 0"/>
+                    <ScrollViewer Grid.Row="1" Padding="10" VerticalScrollBarVisibility="Auto" HorizontalScrollMode="Enabled" HorizontalScrollBarVisibility="Auto">
+                        <StackPanel Orientation="Vertical" MaxWidth="500" >
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon Glyph="&#xE72E;" Margin="0 0 6 0" />
+                                <TextBlock x:Uid="ConnectionInfo" Style="{StaticResource CustomSubtitleTextBlockStyle}" Text="Connection viewer" Margin="0"/>
+                            </StackPanel>
+                            <Grid x:Name="InfoConnectionGrid">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock 
+                                    Grid.Row="1" 
+                                    Grid.Column="0" 
+                                    Text="URL:" 
+                                    HorizontalAlignment="Right" 
+                                    Margin="0,0,0,5" 
+                                />
+                                <TextBlock 
+                                    x:Name="CertURLTextBlock"
+                                    Grid.Row="1" 
+                                    Grid.Column="2" 
+                                    Text="" 
+                                    Padding="0" 
+                                    Margin="0,0,0,5" 
+                                />
+                                <TextBlock 
+                                    x:Uid="CertificateErrorsTextBlock"
+                                    Grid.Row="2" 
+                                    Grid.Column="0" 
+                                    Text="Certificate errors:" 
+                                    HorizontalAlignment="Right" 
+                                    Margin="0,0,0,5" 
+                                />
+                                <TextBlock 
+                                    x:Name="CertErrorTextBlock"
+                                    Grid.Row="2" 
+                                    Grid.Column="2" 
+                                    Text="" 
+                                    Padding="0" 
+                                    Margin="0,0,0,5" 
+                                />
+                                <TextBlock 
+                                    Grid.Row="3" 
+                                    Grid.Column="0" 
+                                    Text="Secure protocol version:" 
+                                    HorizontalAlignment="Right" 
+                                    Margin="0,0,0,5" 
+                                />
+                                <TextBlock 
+                                    x:Name="CertTslTextBlock"
+                                    Grid.Row="3" 
+                                    Grid.Column="2" 
+                                    Text="" 
+                                    Padding="0" 
+                                    Margin="0,0,0,5" 
+                                />
+                            </Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon Glyph="&#xEB95;" Margin="0 0 6 0"/>
+                                <TextBlock x:Uid="CertViewer" Style="{StaticResource CustomSubtitleTextBlockStyle}" Text="Certification viewer" Margin="0"/>
+                            </StackPanel>
+                            <Grid x:Name="InfoGrid">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+                        </StackPanel>
+                    </ScrollViewer>
+                    <Rectangle Grid.Row="2" Fill="#2B2B2B" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                    <Grid Grid.Row="2" Padding="10" MaxWidth="500">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Content="OK" x:Name="CancelButton" Grid.Column="2" HorizontalAlignment="Stretch" Click="CancelButton_Click" />
+                    </Grid>
+                </Grid>
             </Grid>
         </Canvas>
 
