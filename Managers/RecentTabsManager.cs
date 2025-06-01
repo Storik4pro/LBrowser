@@ -168,7 +168,7 @@ namespace LinesBrowser.Managers
             {
                 Windows.Storage.FileProperties.BasicProperties basicProperties =
                     await file.GetBasicPropertiesAsync();
-                fileSizeInBytes = basicProperties.Size;
+                fileSizeInBytes += basicProperties.Size;
                 Debug.WriteLine(basicProperties.Size);
             }
 
