@@ -39,7 +39,7 @@ namespace LinesBrowser
         ClientWebSocket sock;
         public event EventHandler<string> JSONReceived;
         public event EventHandler<BitmapImage> FrameReceived;
-        public event EventHandler<TextPacket> TextPacketReceived;
+        public event EventHandler<string> TextPacketReceived;
         public event EventHandler<BitmapImage> FullPageScreenshotReceived;
         public event EventHandler<string> ErrorHappensReceived;
         public event EventHandler<bool> ServerSendComplete;
@@ -223,7 +223,7 @@ namespace LinesBrowser
                                     Debug.WriteLine($"{StateHelper.Instance.AvailableFeatures}, {handshake.Features}");
                                     break;
                                 }
-                                TextPacketReceived?.Invoke(this, JsonConvert.DeserializeObject<TextPacket>(jsonString));
+                                TextPacketReceived?.Invoke(this, jsonString);
                             }
                         }
                         catch (Exception ex)
@@ -280,6 +280,13 @@ namespace LinesBrowser
         {
             await CreateAndSendDefaultTextPacket(
                 PacketType.OpenUrlInNewTab, targetUrl
+                );
+        }
+
+        public async void RequestCert()
+        {
+            await CreateAndSendDefaultTextPacket(
+                PacketType.RequestCert, ""
                 );
         }
 
