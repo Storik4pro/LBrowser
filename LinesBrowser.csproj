@@ -133,6 +133,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Elements\PinToSymbolConverter.cs" />
+    <Compile Include="Helpers\CertHelper.cs" />
     <Compile Include="Helpers\StateHelper.cs" />
     <Compile Include="Managers\RecentTabsManager.cs" />
     <Compile Include="Network\AudioStreamServer.cs" />
