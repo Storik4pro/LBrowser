@@ -22,6 +22,8 @@ using System.Diagnostics;
 using Windows.Storage;
 using System.Globalization;
 using LinesBrowser.Managers;
+using Windows.Foundation.Metadata;
+using Windows.Phone.UI.Input;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -71,6 +73,10 @@ namespace LinesBrowser
                 navigationManager.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             }
             SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
+            if (ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1, 0))
+            {
+                Windows.Phone.UI.Input.HardwareButtons.BackPressed += OnBackButtonPressed;
+            }
             AutoConnectCheckBox.IsChecked = settings.Values["AutoConnect"] as bool?;
 
             RecentCheckBox.IsChecked = settings.Values["UseRecentFeature"] as bool?;
@@ -131,6 +137,14 @@ namespace LinesBrowser
                     };
                     ThanksPanel.Children.Add(text);
                 }
+            }
+        }
+        private void OnBackButtonPressed(object sender, BackPressedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                e.Handled = true;
+                Frame.GoBack();
             }
         }
         private void System_BackRequested(object sender, BackRequestedEventArgs e)
