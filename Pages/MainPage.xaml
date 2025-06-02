@@ -213,6 +213,30 @@
 
             </DoubleAnimation>
         </Storyboard>
+        <Storyboard x:Name="KeyboardBrowserStoryboard">
+            <DoubleAnimation x:Name="KeyboardBrowserMoveTo" Storyboard.TargetName="BrowserTransform"
+                             Storyboard.TargetProperty="Y"
+                             From="0"
+                             To="0"
+                             Duration="0:0:0.2"
+                             >
+                <DoubleAnimation.EasingFunction>
+                    <ExponentialEase Exponent="6" EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+        <Storyboard x:Name="KeyboardBrowserStoryboardReset">
+            <DoubleAnimation x:Name="KeyboardBrowserReset" Storyboard.TargetName="BrowserTransform"
+                     Storyboard.TargetProperty="Y"
+                     From="0"
+                     To="0"
+                     Duration="0:0:0.2"
+                     >
+                <DoubleAnimation.EasingFunction>
+                    <ExponentialEase Exponent="6" EasingMode="EaseInOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
     </Page.Resources>
 
     <Grid Name="mainGrid" SizeChanged="MainGrid_SizeChanged">
@@ -225,7 +249,11 @@
             <Image Grid.Row="0" Name="test" HorizontalAlignment="Stretch" 
                    Margin="0,0,0,0" VerticalAlignment="Stretch" PointerPressed="Test_PointerPressed" 
                    PointerReleased="Test_PointerReleased" PointerMoved="Test_PointerMoved"
-                   Visibility="Visible"/>
+                   Visibility="Visible">
+                <Image.RenderTransform>
+                    <TranslateTransform x:Name="BrowserTransform" Y="0" />
+                </Image.RenderTransform>
+            </Image>
 
             <ScrollViewer  Grid.Row="0" x:Name="ScreenshotScrollViewer" Visibility="Collapsed" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <Image x:Name="ScreenshotImage" Stretch="UniformToFill" />
@@ -505,7 +533,8 @@
                 <TextBox Name="websiteTextBox" HorizontalAlignment="Stretch" Margin="5" VerticalAlignment="Stretch" 
                          PlaceholderText="Compose text and press enter to commit" Background="{ThemeResource SystemControlBackgroundAccentBrush}" 
                          Style="{x:Bind CenterTextBoxStyle}" BorderThickness="0"
-                         KeyUp="WebsiteTextBox_KeyUp" TextChanged="WebsiteTextBox_TextChanged" />
+                         KeyUp="WebsiteTextBox_KeyUp" TextChanged="WebsiteTextBox_TextChanged" LosingFocus="websiteTextBox_LosingFocus" 
+                         KeyDown="websiteTextBox_KeyDown"/>
 
 
             </Grid>
