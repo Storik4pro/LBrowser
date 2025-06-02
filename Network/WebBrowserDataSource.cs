@@ -29,16 +29,17 @@ using Windows.System.Profile;
 using Windows.ApplicationModel.Resources;
 using System.ServiceModel.Channels;
 using System.IO.Compression;
+using LinesBrowser.Helpers;
+using System.Net.Sockets;
 
 namespace LinesBrowser
 {
-    
     public class WebBrowserDataSource : IDisposable
     {
         ClientWebSocket sock;
         public event EventHandler<string> JSONReceived;
         public event EventHandler<BitmapImage> FrameReceived;
-        public event EventHandler<TextPacket> TextPacketReceived;
+        public event EventHandler<string> TextPacketReceived;
         public event EventHandler<BitmapImage> FullPageScreenshotReceived;
         public event EventHandler<string> ErrorHappensReceived;
         public event EventHandler<bool> ServerSendComplete;
@@ -109,6 +110,8 @@ namespace LinesBrowser
                 catch (Exception ex)
                 {
                     Debug.WriteLine($"EXCEPTION {ex}");
+                    StateHelper.Instance.ServerVersion = "UNKNOWN";
+                    StateHelper.Instance.AvailableFeatures = null;
                     if (!isDisconnectReasonByUser)
                     {
                         ErrorHappensReceived?.Invoke(this, HandleError(ex));
@@ -131,6 +134,8 @@ namespace LinesBrowser
                         }
                         break;
                     case WebSocketMessageType.Close:
+                        StateHelper.Instance.ServerVersion = "UNKNOWN";
+                        StateHelper.Instance.AvailableFeatures = null;
                         break;
                     case WebSocketMessageType.Text:
                         var jsonString = Encoding.UTF8.GetString(actualData);
@@ -205,8 +210,20 @@ namespace LinesBrowser
                             }
                             else
                             {
+                                if (packet.Type != null && packet.Type.GetType() == typeof(string))
+                                {
+                                    break;
+                                }
+                                if (packet.PType == TextPacketType.Handshake)
+                                {
+                                    HandshakePacket handshake = JsonConvert.DeserializeObject<HandshakePacket>(jsonString);
 
-                                TextPacketReceived?.Invoke(this, JsonConvert.DeserializeObject<TextPacket>(jsonString));
+                                    StateHelper.Instance.ServerVersion = handshake.ServerVersion;
+                                    StateHelper.Instance.AvailableFeatures = handshake.Features?.ToList() ?? new List<string>();
+                                    Debug.WriteLine($"{StateHelper.Instance.AvailableFeatures}, {handshake.Features}");
+                                    break;
+                                }
+                                TextPacketReceived?.Invoke(this, jsonString);
                             }
                         }
                         catch (Exception ex)
@@ -219,12 +236,16 @@ namespace LinesBrowser
                         break;
                 }
             }
+            StateHelper.Instance.ServerVersion = "UNKNOWN";
+            StateHelper.Instance.AvailableFeatures = null;
             if (!isDisconnectReasonByUser)
             {
                 ErrorHappensReceived?.Invoke(this, $"ERR_NET_SYSTEM_DISCONNECT_STATUS_{sock.CloseStatus}");
             }
             Debug.WriteLine("Connection closed");
         }
+
+        private static readonly object _messageLock = new object();
 
         private async Task ShowErrorDialogAsync(string title, string message)
         {
@@ -262,6 +283,13 @@ namespace LinesBrowser
                 );
         }
 
+        public async void RequestCert()
+        {
+            await CreateAndSendDefaultTextPacket(
+                PacketType.RequestCert, ""
+                );
+        }
+
         public async void RequestTabScreenshot(long tabId)
         {
             await CreateAndSendDefaultTextPacket(
@@ -277,7 +305,13 @@ namespace LinesBrowser
                 PType = PacketType.GetTabsOpen
             }));
             var buffer = new ArraySegment<byte>(encoded, 0, encoded.Length);
-            await sock.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
+
+            lock (_messageLock)
+            {
+                sock.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
+            }
+
+            await Task.CompletedTask;
         }
 
         public async void CloseTab(long id)
@@ -439,13 +473,17 @@ namespace LinesBrowser
 
         private async Task SendTextPacket(CommPacket commPacket)
         {
-            if (sock.State != WebSocketState.Open)
-                return;
+            lock (_messageLock)
+            {
+                if (sock.State != WebSocketState.Open)
+                    return;
 
-            string PacketJSON = JsonConvert.SerializeObject(commPacket);
-            var encoded = Encoding.UTF8.GetBytes(PacketJSON);
-            var buffer = new ArraySegment<byte>(encoded, 0, encoded.Length);
-            await sock.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
+                string PacketJSON = JsonConvert.SerializeObject(commPacket);
+                var encoded = Encoding.UTF8.GetBytes(PacketJSON);
+                var buffer = new ArraySegment<byte>(encoded, 0, encoded.Length);
+                sock.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
+            }
+            await Task.CompletedTask;
         }
 
         private byte[] DecompressGzip(byte[] data)

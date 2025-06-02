@@ -36,6 +36,9 @@ namespace LinesBrowser
         EditOpenTabTitle,
         IsClientCanSendGoBackRequest,
         IsClientCanSendGoForwardRequest,
+        Handshake,
+        ConnectionState,
+        TextInputContentV2,
     }
 
     public enum PacketType
@@ -63,7 +66,32 @@ namespace LinesBrowser
         IsCanGoForward,
         SendKeyCommand,
         SendChar,
+        RequestCert,
     }
+    public class HandshakePacket
+    {
+        public TextPacketType PType { get; set; } = TextPacketType.Handshake;
+        public string ServerVersion { get; set; }
+        public string[] Features { get; set; }
+    }
+
+    public class ConnectionSecurePacket
+    {
+        public TextPacketType PType { get; set; } = TextPacketType.ConnectionState;
+        public bool CertificateError { get; set; }
+        public string CertificateErrorName { get; set; }
+        public bool IsSecureConnection { get; set; }
+        public string TlsVersion { get; set; }
+        public string Url { get; set; }
+        public string Subject { get; set; }
+        public string Issuer { get; set; }
+        public DateTime ValidFromTime { get; set; }
+        public DateTime ValidToTime { get; set; }
+        public string Thumbprint { get; set; }
+        public string SerialNumber { get; set; }
+        public string PublicKey { get; set; }
+    }
+
     public struct DiscoveryPacket
     {
         public DiscoveryPacketType PType;
@@ -82,5 +110,14 @@ namespace LinesBrowser
         public bool Ctrl { get; set; }
         public bool Alt { get; set; }
         public string Layout { get; set; }
+    }
+
+    public class TextInputContentPacket
+    {
+        public TextPacketType PType { get; set; } = TextPacketType.TextInputContentV2;
+        public string Text { get; set; }
+        public string Placeholder { get; set; }
+        public double px { get; set; }
+        public double py { get; set; }
     }
 }

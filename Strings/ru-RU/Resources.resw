@@ -314,4 +314,133 @@
   <data name="AppShortName" xml:space="preserve">
     <value>Л-Браузер</value>
   </data>
+  <data name="FeatureNotSupported" xml:space="preserve">
+    <value>Функция "{0}" не поддерживается текущим программным обеспечением сервера. Чтобы использовать функцию "{0}" вам необходим Ассистент Развертывания Сервера версии {1} и выше.</value>
+  </data>
+  <data name="FeatureNotSupportedTitle" xml:space="preserve">
+    <value>Функция недоступна</value>
+  </data>
+  <data name="Recent.Label" xml:space="preserve">
+    <value>Недавние</value>
+  </data>
+  <data name="ServerVersionNotSupported" xml:space="preserve">
+    <value>Сервер, к которому вы подключились, не поддерживается. Убедитесь,что вы используете совместимую версию Ассистента Развертывания Сервера.</value>
+  </data>
+  <data name="ServerVersionOutOfDate" xml:space="preserve">
+    <value>Сервер, к которому вы подключились, устарел. Убедитесь,что вы используете последнюю версию Ассистента Развертывания Сервера.</value>
+  </data>
+  <data name="FeatureDisabled" xml:space="preserve">
+    <value>Функция "{0}" отключена. Чтобы продолжить использование этой функции включите её в параметрах приложения</value>
+  </data>
+  <data name="FeatureDisabledTitle" xml:space="preserve">
+    <value>Функция недоступна</value>
+  </data>
+  <data name="RecentDeleteText" xml:space="preserve">
+    <value>Сейчас функция "Недавние" использует {0} {1} в памяти вашего устройства. Нажмите "Удалить все недавние данные", чтобы удалить историю функции. Будьте внимательны: ваши закрепленные вкладки также будут удалены. </value>
+  </data>
+  <data name="RecentText.Text" xml:space="preserve">
+    <value>Недавние</value>
+  </data>
+  <data name="RecentCheckBox.Content" xml:space="preserve">
+    <value>Разрешить собирать и сохранять данные о ваших посещениях для функции "Недавние"</value>
+  </data>
+  <data name="DataManagerTitle.Text" xml:space="preserve">
+    <value>Используемые данные</value>
+  </data>
+  <data name="DeleteAllRecentDataButton.Content" xml:space="preserve">
+    <value>Удалить все недавние данные</value>
+  </data>
+  <data name="AreYouSureYouWantDelete.Text" xml:space="preserve">
+    <value>Вы уверены, что хотите удалить всю историю функции "Недавние"?</value>
+  </data>
+  <data name="ActionCannotBeUndo.Text" xml:space="preserve">
+    <value>Это действие нельзя отменить.</value>
+  </data>
+  <data name="No.Content" xml:space="preserve">
+    <value>нет</value>
+  </data>
+  <data name="Yes.Content" xml:space="preserve">
+    <value>да</value>
+  </data>
+  <data name="BackAppBarButton.Label" xml:space="preserve">
+    <value>Назад</value>
+  </data>
+  <data name="Search.PlaceholderText" xml:space="preserve">
+    <value>Начните вводить текст для поиска ...</value>
+  </data>
+  <data name="Certificate.Text" xml:space="preserve">
+    <value>Сертификат</value>
+  </data>
+  <data name="CertificateErrorsTextBlock.Text" xml:space="preserve">
+    <value>Текущие ошибки сертификата</value>
+  </data>
+  <data name="CertificateIssuer.Text" xml:space="preserve">
+    <value>Издатель сертификата</value>
+  </data>
+  <data name="CertInfo.Text" xml:space="preserve">
+    <value>Информация о сертификате</value>
+  </data>
+  <data name="CertViewer.Text" xml:space="preserve">
+    <value>Просмотр: Сертификат</value>
+  </data>
+  <data name="ConnectionCertSecureError" xml:space="preserve">
+    <value>Ваше соединение не является защищенным. Злоумышленники могут попытаться украсть ваши данные (например, пароли, сообщения или номера кредитных карт)</value>
+  </data>
+  <data name="ConnectionInfo.Text" xml:space="preserve">
+    <value>Просмотр: Подключение</value>
+  </data>
+  <data name="ConnectionServerSecureError" xml:space="preserve">
+    <value>Подключение к веб-сайту безопасно, но подключение к серверу не является таковым. Пожалуйста, убедитесь, что вы используете локальную сеть, которой доверяете.</value>
+  </data>
+  <data name="ConnectionToSite.Text" xml:space="preserve">
+    <value>Подключение к сайту</value>
+  </data>
+  <data name="Correct" xml:space="preserve">
+    <value>Подтвержден</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Страна</value>
+  </data>
+  <data name="Incorrect" xml:space="preserve">
+    <value>Не подтвержден</value>
+  </data>
+  <data name="Insecure" xml:space="preserve">
+    <value>Небезопасно</value>
+  </data>
+  <data name="Locality" xml:space="preserve">
+    <value>Локация</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="NotInCert" xml:space="preserve">
+    <value>&lt;Не является частью сертификата&gt;</value>
+  </data>
+  <data name="Organization" xml:space="preserve">
+    <value>Организация</value>
+  </data>
+  <data name="OrganizationalUnit" xml:space="preserve">
+    <value>Подразделение</value>
+  </data>
+  <data name="Secure" xml:space="preserve">
+    <value>Безопасно</value>
+  </data>
+  <data name="ServerConnection.Text" xml:space="preserve">
+    <value>Подключение к серверу</value>
+  </data>
+  <data name="StateOrProvinceName" xml:space="preserve">
+    <value>Штат или название провинции</value>
+  </data>
+  <data name="ValidFrom" xml:space="preserve">
+    <value>Действует с</value>
+  </data>
+  <data name="ValidTo" xml:space="preserve">
+    <value>Действует до</value>
+  </data>
+  <data name="WebSiteIdentity.Text" xml:space="preserve">
+    <value>Идентификация веб-сайта</value>
+  </data>
+  <data name="ViewCert.Content" xml:space="preserve">
+    <value>Просмотреть сертификат</value>
+  </data>
 </root>
