@@ -72,10 +72,10 @@ namespace LinesBrowser
                 var navigationManager = SystemNavigationManager.GetForCurrentView();
                 navigationManager.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             }
-            SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
             if (ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1, 0))
             {
-                Windows.Phone.UI.Input.HardwareButtons.BackPressed += OnBackButtonPressed;
+                Windows.Phone.UI.Input.HardwareButtons.BackPressed += OnHardwareBackPressed;
             }
             AutoConnectCheckBox.IsChecked = settings.Values["AutoConnect"] as bool?;
 
@@ -100,6 +100,47 @@ namespace LinesBrowser
             SetupRecentStorageSize();
 
             // LagTextBox.Text = (settings.Values["preferredLag"] as string)?? "2";
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
+            {
+                var navigationManager = SystemNavigationManager.GetForCurrentView();
+                navigationManager.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+            }
+            SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
+            if (ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1, 0))
+            {
+                Windows.Phone.UI.Input.HardwareButtons.BackPressed -= OnHardwareBackPressed;
+            }
+        }
+
+        private void OnHardwareBackPressed(object sender, BackPressedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                e.Handled = true;
+                Frame.GoBack();
+            }
+            else
+            {
+                e.Handled = false;
+            }
+        }
+
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                e.Handled = true;
+                Frame.GoBack();
+            }
+            else
+            {
+                e.Handled = false;
+            }
         }
 
         private async void SetupRecentStorageSize()
@@ -139,32 +180,7 @@ namespace LinesBrowser
                 }
             }
         }
-        private void OnBackButtonPressed(object sender, BackPressedEventArgs e)
-        {
-            if (Frame.CanGoBack)
-            {
-                e.Handled = true;
-                Frame.GoBack();
-            }
-        }
-        private void System_BackRequested(object sender, BackRequestedEventArgs e)
-        {
-            if (Frame.CanGoBack)
-            {
-                e.Handled = true;
-                Frame.GoBack();
-            }
-        }
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            base.OnNavigatedFrom(e);
-            if (Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily == "Windows.Desktop")
-            {
-                var navigationManager = SystemNavigationManager.GetForCurrentView();
-                navigationManager.BackRequested -= System_BackRequested;
-                navigationManager.AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
-            }
-        }
+       
 
         private void OnLanguageChanged(object sender, SelectionChangedEventArgs e)
         {

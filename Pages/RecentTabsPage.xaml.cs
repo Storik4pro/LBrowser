@@ -10,7 +10,10 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Search.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Foundation.Metadata;
+using Windows.Phone.UI.Input;
 using Windows.Storage;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -33,11 +36,54 @@ namespace LinesBrowser.Pages
         {
             this.InitializeComponent();
             RecentTabsListView.ItemsSource = _filteredTabs;
+
+            SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
+            if (ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1, 0))
+            {
+                Windows.Phone.UI.Input.HardwareButtons.BackPressed += OnHardwareBackPressed;
+            }
         }
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
             await LoadRecentTabsAsync();
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
+            if (ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1, 0))
+            {
+                Windows.Phone.UI.Input.HardwareButtons.BackPressed -= OnHardwareBackPressed;
+            }
+        }
+
+        private void OnHardwareBackPressed(object sender, BackPressedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                e.Handled = true;
+                Frame.GoBack();
+            }
+            else
+            {
+                e.Handled = false;
+            }
+        }
+
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (Frame.CanGoBack)
+            {
+                e.Handled = true;
+                Frame.GoBack();
+            }
+            else
+            {
+                e.Handled = false;
+            }
         }
 
         private void AuditErrorVisibility()

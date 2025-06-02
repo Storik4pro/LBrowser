@@ -96,6 +96,7 @@ namespace LinesBrowser
         {
             ProgressRing.Visibility = Visibility.Collapsed;
             Frame.Navigate(typeof(MainPage));
+            Frame.BackStack.Clear();
         }
 
         private void ConnectionHelper_OnServerConnectedSuccessful(object sender, EventArgs e)
@@ -188,6 +189,7 @@ namespace LinesBrowser
         private void ContinueAnywayButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.Navigate(typeof(MainPage));
+            Frame.BackStack.Clear();
         }
     }
 }
