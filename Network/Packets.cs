@@ -38,6 +38,7 @@ namespace LinesBrowser
         IsClientCanSendGoForwardRequest,
         Handshake,
         ConnectionState,
+        TextInputContentV2,
     }
 
     public enum PacketType
@@ -109,5 +110,14 @@ namespace LinesBrowser
         public bool Ctrl { get; set; }
         public bool Alt { get; set; }
         public string Layout { get; set; }
+    }
+
+    public class TextInputContentPacket
+    {
+        public TextPacketType PType { get; set; } = TextPacketType.TextInputContentV2;
+        public string Text { get; set; }
+        public string Placeholder { get; set; }
+        public double px { get; set; }
+        public double py { get; set; }
     }
 }
