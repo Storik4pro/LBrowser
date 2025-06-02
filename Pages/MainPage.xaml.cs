@@ -63,6 +63,8 @@ namespace LinesBrowser
         private static ResourceLoader resourceLoader = Windows.ApplicationModel.Resources.ResourceLoader.GetForCurrentView();
         ApplicationDataContainer localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
 
+        public double inputElementY = 0;
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -106,16 +108,23 @@ namespace LinesBrowser
             ConnectHandlers();
 
             SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
-
             if (ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1, 0))
             {
-                Windows.Phone.UI.Input.HardwareButtons.BackPressed += OnBackButtonPressed;
+                Windows.Phone.UI.Input.HardwareButtons.BackPressed += OnHardwareBackPressed;
             }
 
             DisplayRequest displayRequest = new DisplayRequest();
             displayRequest.RequestActive();
 
             ConnectionHelper.Instance.webBrowserDataSource.RequestCert();
+
+            _currentInterval = _startInterval;
+
+            _backspaceTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromMilliseconds(_currentInterval)
+            };
+            _backspaceTimer.Tick += BackspaceTimer_Tick;
 
         }
 
@@ -130,34 +139,45 @@ namespace LinesBrowser
                     OpenTabsPage();
                 }
             }
+            Frame.BackStack.Clear();
+        }
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+
+            SystemNavigationManager.GetForCurrentView().BackRequested -= OnBackRequested;
+            if (ApiInformation.IsApiContractPresent("Windows.Phone.PhoneContract", 1, 0))
+            {
+                Windows.Phone.UI.Input.HardwareButtons.BackPressed -= OnHardwareBackPressed;
+            }
         }
 
-        public bool GoAppBack()
+        private void OnHardwareBackPressed(object sender, BackPressedEventArgs e)
+        {
+            e.Handled = HandleBackLogic();
+        }
+
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            e.Handled = HandleBackLogic();
+        }
+
+        private bool HandleBackLogic()
         {
             if (CertGrid.Visibility == Visibility.Visible)
             {
                 CertGrid.Visibility = Visibility.Collapsed;
-                return true;
+                return true; 
             }
+
             if (isCanGoBack)
             {
                 webBrowserDataSource.NavigateBack();
                 TogglePageLoadingMode(true);
                 return true;
             }
+
             return false;
-        }
-
-        private void OnBackButtonPressed(object sender, BackPressedEventArgs e)
-        {
-            GoAppBack();
-            e.Handled = true;
-        }
-
-        private void OnBackRequested(object sender, BackRequestedEventArgs e)
-        {
-            GoAppBack();
-            e.Handled = true;
         }
 
         private void OnVisibleBoundsChanged(ApplicationView sender, object args)
@@ -271,7 +291,18 @@ namespace LinesBrowser
                 EntryNavBar, 
                 Window.Current.Bounds.Height - (Window.Current.Bounds.Height - visible.Height) - args.OccludedRect.Height - EntryNavBar.ActualHeight
                 );
-            EntryNavBar.Width = Window.Current.Bounds.Width; 
+            EntryNavBar.Width = Window.Current.Bounds.Width;
+
+            var keyboardHeight = args.OccludedRect.Height;
+            
+            if (inputElementY != 0 && (test.ActualHeight - keyboardHeight - inputElementY < 0))
+            {
+                KeyboardBrowserStoryboardReset.Stop();
+                KeyboardBrowserMoveTo.To = test.ActualHeight - keyboardHeight - inputElementY + NavbarGrid.ActualHeight;
+                KeyboardBrowserReset.From = KeyboardBrowserMoveTo.To;
+                KeyboardBrowserStoryboard.Begin();
+            } 
+
             args.EnsuredFocusedElementInView = true; 
         }
 
@@ -279,6 +310,11 @@ namespace LinesBrowser
         {
             EntryNavBar.Width = Window.Current.Bounds.Width;
             Canvas.SetTop(EntryNavBar, Window.Current.Bounds.Height - 50);
+
+            NavbarGrid.Visibility = Visibility.Visible;
+            TextInput.Visibility = Visibility.Collapsed;
+            KeyboardBrowserStoryboard.Stop();
+            KeyboardBrowserStoryboardReset.Begin();
         }
         private void LoseFocus(object sender)
         {
@@ -413,6 +449,8 @@ namespace LinesBrowser
                         break;
 
                     case TextPacketType.TextInputContent:
+                        if (StateHelper.Instance.AvailableFeatures.Contains("TEXTIV2"))
+                            break;
                         NavbarGrid.Visibility = Visibility.Collapsed;
                         TextInput.Visibility = Visibility.Visible;
                         Debug.WriteLine($"TEXT > {textPacket.text}");
@@ -464,9 +502,21 @@ namespace LinesBrowser
                             ForwardButton.IsEnabled = isCanGoForward;
                         }
                         break;
+                    case TextPacketType.TextInputContentV2:
+                        KeyboardBrowserReset.From = 0;
+                        TextInputContentPacket textInputContentPacket = JsonConvert.DeserializeObject<TextInputContentPacket>(o);
+                        NavbarGrid.Visibility = Visibility.Collapsed;
+                        TextInput.Visibility = Visibility.Visible;
+
+                        inputElementY = textInputContentPacket.py;
+                        websiteTextBox.Text = "";
+                        websiteTextBox.PlaceholderText = textInputContentPacket.Placeholder ?? "";
+
+                        websiteTextBox.Select(websiteTextBox.Text.Length, 0);
+                        websiteTextBox.Focus(FocusState.Programmatic);
+                        break;
                     case TextPacketType.ConnectionState:
                         ConnectionSecurePacket connectionSecurePacket = JsonConvert.DeserializeObject<ConnectionSecurePacket>(o);
-                        Debug.WriteLine(connectionSecurePacket.Issuer);
 
                         TogglePageLoadingMode(false);
                         webBrowserDataSource.isServerLoadingComplete = true;
@@ -498,11 +548,40 @@ namespace LinesBrowser
 
             audioStreamerClient = ConnectionHelper.Instance.audioStreamerClient;
         }
+        private DispatcherTimer _backspaceTimer;
+        private bool _isBackspaceHeld = false;
+
+        private int _currentInterval;
+        private const int _startInterval = 200;
+        private const int _decrementStep = 50;
+        private const int _minInterval = 10;
+        private void BackspaceTimer_Tick(object sender, object e)
+        {
+            webBrowserDataSource.SendKeyCommand("Backspace");
+
+            int next = _currentInterval - _decrementStep;
+            if (next < _minInterval)
+                next = _minInterval;
+            _currentInterval = next;
+
+            _backspaceTimer.Interval = TimeSpan.FromMilliseconds(_currentInterval);
+        }
+        private void websiteTextBox_KeyDown(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key != Windows.System.VirtualKey.Back)
+                return;
+
+            if (_isBackspaceHeld)
+                return;
+
+            webBrowserDataSource.SendKeyCommand("Backspace");
+            _isBackspaceHeld = true;
+            _currentInterval = _startInterval;
+            _backspaceTimer.Interval = TimeSpan.FromMilliseconds(_currentInterval);
+            _backspaceTimer.Start();
+        }
         private void WebsiteTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
         {
-            // webBrowserDataSource.SendKey(e);
-
-            string inputChar = null;
             if (e.Key == Windows.System.VirtualKey.Enter)
             {
                 webBrowserDataSource.SendKeyCommand("Enter");
@@ -510,45 +589,79 @@ namespace LinesBrowser
             }
             else if (e.Key == Windows.System.VirtualKey.Back)
             {
-                webBrowserDataSource.SendKeyCommand("Backspace");
+                _backspaceTimer.Stop();
+                _isBackspaceHeld = false;
+
+                _currentInterval = _startInterval;
                 return;
             } 
-            else if (e.Key != Windows.System.VirtualKey.Shift && e.Key != Windows.System.VirtualKey.Control)
-            {
-                var tb = sender as TextBox;
-                Debug.WriteLine($"tb is {tb}, {tb.Text.Length}");
-                if (tb != null && tb.Text.Length > 0)
-                {
-                    inputChar = tb.Text.Last().ToString();
-                }
-            }
             Debug.WriteLine($"e.Key {e.Key}");
-            if (!string.IsNullOrEmpty(inputChar))
+        }
+
+        private readonly Queue<string> _sendQueue = new Queue<string>();
+        private bool _isSending = false;
+
+        private string _previousText = "";
+        private void WebsiteTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            var tb = sender as TextBox;
+            if (tb == null) return;
+
+            var newText = tb.Text;
+            if (newText.Length > _previousText.Length)
             {
+                var added = newText.Substring(_previousText.Length);
+
+                foreach (char c in added)
+                {
+                    _sendQueue.Enqueue(c.ToString());
+                }
+
+                TryStartQueueProcessing();
+            }
+
+            _previousText = newText;
+        }
+
+        private void TryStartQueueProcessing()
+        {
+            if (_isSending)
+                return;
+
+            if (_sendQueue.Count > 0)
+            {
+                _ = SendCharToServer();
+            }
+        }
+
+        private async Task SendCharToServer()
+        {
+            _isSending = true;
+
+            while (_sendQueue.Count > 0)
+            {
+                var ch = _sendQueue.Dequeue();
                 var shift = Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.Shift).HasFlag(CoreVirtualKeyStates.Down);
                 var ctrl = Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.Control).HasFlag(CoreVirtualKeyStates.Down);
                 var alt = Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.Menu).HasFlag(CoreVirtualKeyStates.Down);
-
-                var inputLanguage = Windows.Globalization.Language.CurrentInputMethodLanguageTag;
+                var layout = Windows.Globalization.Language.CurrentInputMethodLanguageTag;
 
                 var packet = new KeyCharPacket
                 {
-                    JSONData = inputChar,
+                    JSONData = ch,
                     Shift = shift,
                     Ctrl = ctrl,
                     Alt = alt,
-                    Layout = inputLanguage
+                    Layout = layout
                 };
 
                 var json = Newtonsoft.Json.JsonConvert.SerializeObject(packet);
-                Debug.WriteLine($"JSON {json.ToString()}");
                 webBrowserDataSource.SendChar(json);
             }
+            _isSending = false;
+            await Task.CompletedTask;
         }
-        private void WebsiteTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            
-        }
+
         private void SendText_Click(object sender, RoutedEventArgs e)
         {
             webBrowserDataSource.SendText(websiteTextBox.Text);
@@ -1290,5 +1403,15 @@ namespace LinesBrowser
             CertGrid.Visibility = Visibility.Visible;
             CertFlyout.Hide();
         }
+
+        private void websiteTextBox_LosingFocus(UIElement sender, Windows.UI.Xaml.Input.LosingFocusEventArgs args)
+        {
+            inputElementY = 0;
+            NavbarGrid.Visibility = Visibility.Visible;
+            TextInput.Visibility = Visibility.Collapsed;
+            KeyboardBrowserMoveTo.To = 0;
+            
+        }
+        
     }
 }
