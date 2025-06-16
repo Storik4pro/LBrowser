@@ -98,8 +98,8 @@ You can download server application (SDA):
 - [Страница релизов](https://github.com/Storik4pro/LBrowser/releases)
 - [Storik4pro.github.io](https://storik4pro.github.io/ru-RU/LBrowser/) (используя менеджер загрузок — для устройств, с которых невозможно зайти на сайт GitHub)
 
-You can download server application (SDA):
-- [Страница релизов в репозитории Браузера Линии](https://github.com/Storik4pro/LBrowser/releases) (это `SDA.exe` файл)
+Вы можете установить серверную часть приложения (SDA):
+- [Страница релизов в репозитории Браузера Линии](https://github.com/Storik4pro/LBrowser/releases) (это `SDA.zip` файл)
 - [Страница релизов в репозитории SDA](https://github.com/Storik4pro/Server-Deployment-Assistant/releases) (не рекомендуется)
 - [Storik4pro.github.io](https://storik4pro.github.io/ru-RU/LBrowser/) (используя менеджер загрузок — для устройств, с которых невозможно зайти на сайт GitHub)
 
