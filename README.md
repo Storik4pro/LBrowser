@@ -52,7 +52,7 @@ You can download application package on:
 
 You can download server application (SDA):
 - [Release page of Lines Browser repo](https://github.com/Storik4pro/LBrowser/releases) (it is `SDA.zip` file)
-- [Release page of SDA repo](https://https://github.com/Storik4pro/Server-Deployment-Assistant/releases) (not recommended)
+- [Release page of SDA repo](https://github.com/Storik4pro/Server-Deployment-Assistant/releases) (not recommended)
 - [Storik4pro.github.io](https://storik4pro.github.io/en-US/LBrowser/) (using download manager — for devices, who can't open github in browser)
 
 ## Credits
